@@ -1,3 +1,5 @@
+import random
+
 class Main:
 	def __init__(self):
 		self.get_word_question()
@@ -6,16 +8,22 @@ class Main:
 	def get_warm_up_question(self):
 		with open('warm-up-questions.txt') as f:
 			lines = f.readlines()
+			return self.format_raw_question(random.choice(lines))
+			"""
 			for i in range(0, len(lines)): # doesn't work when using enhanced for??
 				lines[i] = self.format_raw_question(lines[i])
-				print(lines[i])
+				#print(lines[i])
+			"""
 
 	def get_word_question(self):
 		with open('questions.txt') as f:
-			lines = f.readlines()
+			lines = f.readlines()		
+			return self.format_raw_question(random.choice(lines))
+			"""
 			for i in range(0, len(lines)):
 				lines[i] = self.format_raw_question(lines[i])
-				print(lines[i])
+				#print(lines[i])
+			"""
 
 	def format_raw_question(self, line):
 		line = str(line).encode().decode('unicode-escape') #.replace("|", "\n")
