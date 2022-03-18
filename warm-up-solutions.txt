@@ -1,6 +1,0 @@
-(P(A) + P(B) - P(A ∪ B)) / (P(B))
-(P(A ∩ B)) / (P(B))
-(P(A) + P(B) - P(A ∪ B))
-(P(B) * P(A | B))
-(P(A) + P(B) - P(A ∩ B))
-(P(A) + P(B) - (P(B) * P(A | B)))
