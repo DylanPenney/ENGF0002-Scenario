@@ -1,0 +1,4 @@
+(((random_numbers[0] ** 2) + (random_numbers[1] ** 2) - random_numbers[0] - random_numbers[1]) / ((random_numbers[0] ** 2) + (random_numbers[1] ** 2) + (2 * random_numbers[0] * random_numbers[1]) - random_numbers[0] - random_numbers[1]))
+((2 * random_numbers[0] * random_numbers[1]) / ((random_numbers[0] ** 2) + (random_numbers[1] ** 2) + (2 * random_numbers[0] * random_numbers[1]) - random_numbers[0] - random_numbers[1]))
+(0.5 ** random_numbers[0])
+(0.5 ** random_numbers[0]) * random_numbers[0]

@@ -1,2 +1,5 @@
-A box contains {} green and {} blue marbles. Two marbles are selected at random (without replacement). Find the probability that the selected marbles are:\n(a) {}\n(b) {}
-You toss a fair coin three times. Find the probability that:\n(a) You observe {}\n(b) You observe exactly one {}\n(c) Given that you have observed one heads, what is the probability that you observe at least {} head(s)
+A box contains R1 green and R2 blue marbles. Two marbles are selected at random (without replacement). Find the probability that the selected marbles are of the same colour.
+A box contains R1 green and R2 blue marbles. Two marbles are selected at random (without replacement). Find the probability that the selected marbles are of different colours.
+You toss a fair coin R1 times. Find the probability that you observe all heads.
+You toss a fair coin R1 times. Find the probability that you observe exactly 1 heads. 
+You toss a fair coin R1 times. Find the probability that you observe...
