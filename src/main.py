@@ -5,6 +5,7 @@ class Main:
 		self.warm_up_question()
 		self.word_question()
 
+	# Acts as a menu for questions (warm-up)
 	def warm_up_question(self):
 		A = round(random.uniform(0.1, 1.0), 2)
 		B = round(random.uniform(0.1, 1.0), 2)
@@ -17,6 +18,7 @@ class Main:
 		solution = round(eval(pair[1]), 2)
 		self.check_solution(question, solution)
 
+	# Acts as a menu for questions (word)
 	def word_question(self):
 		random_numbers = [random.randint(1, 10) for i in range(5)]
 		pair = self.get_word_question()
