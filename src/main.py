@@ -15,11 +15,7 @@ class Main:
 
 		question = pair[0].replace("PA", str(A)).replace("PB", str(B)).replace("AorB", str(AorB)).replace("AandB", str(AandB)).replace("AgivenB", str(AgivenB))
 		solution = round(eval(pair[1]), 2)
-		user_answer = -1 # Turn while loop into a 'do-while' loop
-		print(question)
-		while not self.check_solution(user_answer, solution):
-			user_answer = float(input("Answer to two decimal places (where applicable).\n>>>"))
-		print("Correct")
+		self.check_solution(question, solution)
 
 	def word_question(self):
 		random_numbers = [random.randint(1, 10) for i in range(5)]
@@ -27,11 +23,7 @@ class Main:
 
 		question = pair[0].replace("R1", str(random_numbers[0])).replace("R2", str(random_numbers[1]))
 		solution = round(eval(pair[1]), 2)
-		user_answer = -1 # Turn while loop into a 'do-while' loop
-		print(question)
-		while not self.check_solution(user_answer, solution):
-			user_answer = float(input("Answer to two decimal places (where applicable).\n>>>"))
-		print("Correct")
+		self.check_solution(question, solution)
 
 	# Provides interface with a random question and answer from the selection of warm up questions
 	def get_warm_up_question(self):
@@ -61,7 +53,13 @@ class Main:
 		line = str(line).encode().decode('utf-8').replace('\n', '')
 		return line
 
-	def check_solution(self, user_answer, solution):
-		return user_answer == solution
+	def check_solution(self, question, solution):
+		user_answer = -1 # Turn while loop into a 'do-while' loop
+		print(question)
+		print("Answer to two decimal places (where applicable).")
+		user_answer = round(float(input(">>>")), 2)
+		while user_answer != solution:
+			user_answer = float(input("Incorrect!\n>>>"))
+		print("Correct!")
 
 Main()

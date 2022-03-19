@@ -2,4 +2,3 @@ A box contains R1 green and R2 blue marbles. Two marbles are selected at random 
 A box contains R1 green and R2 blue marbles. Two marbles are selected at random (without replacement). Find the probability that the selected marbles are of different colours.
 You toss a fair coin R1 times. Find the probability that you observe all heads.
 You toss a fair coin R1 times. Find the probability that you observe exactly 1 heads. 
-You toss a fair coin R1 times. Find the probability that you observe...
