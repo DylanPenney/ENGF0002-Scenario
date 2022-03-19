@@ -35,9 +35,9 @@ class Main:
 
 	# Provides interface with a random question and answer from the selection of warm up questions
 	def get_warm_up_question(self):
-		with open('warm-up-questions/warm-up-questions.txt', 'r') as q:
+		with open('../warm-up-questions/warm-up-questions.txt', 'r') as q:
 			questions = q.readlines()
-		with open('warm-up-questions/warm-up-solutions.txt', 'r') as s:
+		with open('../warm-up-questions/warm-up-solutions.txt', 'r') as s:
 			solutions = s.readlines()
 		index = random.randint(0, min(len(questions), len(solutions) - 1))
 		question = self.format_raw_question(questions[index])
@@ -45,9 +45,9 @@ class Main:
 		return question, solution
 
 	def get_word_question(self):
-		with open('word-questions/questions.txt') as q:
+		with open('../word-questions/questions.txt') as q:
 			questions = q.readlines()
-		with open('word-questions/solutions.txt') as s:
+		with open('../word-questions/solutions.txt') as s:
 			solutions = s.readlines()
 		index = random.randint(0, min(len(questions), len(solutions) - 1))
 		question = self.format_raw_question(questions[index])
