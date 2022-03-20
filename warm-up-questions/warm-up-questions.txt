@@ -1,4 +1,0 @@
-Let A and B be independent events such that P(A) = PA, P(B) = PB, find P(A ∩ B).
-Let A and B be independent events such that P(A) = PA, P(B) = PB, find P(A ∩ B).
-Let A and B be independent events such that P(A) = PA, P(B) = PB, find P(A ∪ B).
-Let A and B be independent events such that P(A) = PA, P(B) = PB, find P(A ∪ B).
