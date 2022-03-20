@@ -1,6 +1,4 @@
-((A + B - AorB) / (B))
-((AandB) / (B))
 (A + B - AorB)
-(B * AgivenB)
+(B * A)
 (A + B - AandB)
-(A + B - (B * AgivenB))
+(A + B - (B * A))
