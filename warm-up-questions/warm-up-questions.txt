@@ -1,6 +1,6 @@
-Let A and B be events such that P(A) = PA, P(B) = PB and P(A ∪ B) = AorB, find P(A | B).
-Let A and B be events such that P(A) = PA, P(B) = PB and P(A ∩ B) = AandB, find P(A | B).
-Let A and B be events such that P(A) = PA, P(B) = PB and P(A ∪ B) = AorB, find P(A ∩ B).
-Let A and B be events such that P(A) = PA, P(B) = PB and P(A | B) = AgivenB, find P(A ∩ B).
-Let A and B be events such that P(A) = PA, P(B) = PB and P(A ∩ B) = AandB, find P(A ∪ B).
-Let A and B be events such that P(A) = PA, P(B) = PB and P(A | B) = AgivenB, find P(A ∪ B).
+Let A and B be disjoint events such that P(A) = PA, P(B) = PB and P(A ∪ B) = AorB, find P(A | B).
+Let A and B be disjoint events such that P(A) = PA, P(B) = PB and P(A ∩ B) = AandB, find P(A | B).
+Let A and B be disjoint events such that P(A) = PA, P(B) = PB and P(A ∪ B) = AorB, find P(A ∩ B).
+Let A and B be disjoint events such that P(A) = PA, P(B) = PB and P(A | B) = AgivenB, find P(A ∩ B).
+Let A and B be disjoint events such that P(A) = PA, P(B) = PB and P(A ∩ B) = AandB, find P(A ∪ B).
+Let A and B be disjoint events such that P(A) = PA, P(B) = PB and P(A | B) = AgivenB, find P(A ∪ B).
