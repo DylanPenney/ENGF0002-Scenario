@@ -9,8 +9,8 @@ class Main:
 	def warm_up_question(self):
 		A = round(random.uniform(0.1, 1.0), 2)
 		B = round(random.uniform(0.1, 1.0), 2)
-		AorB = round(random.uniform(0.1, 1.0), 2)
-		AandB = round(A + B - AorB, 2)
+		AorB = round(A + B, 2)
+		AandB = round(A * B, 2)
 		AgivenB = round(AandB / B, 2)
 		pair = self.get_warm_up_question()
 
