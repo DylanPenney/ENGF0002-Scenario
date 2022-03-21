@@ -57,9 +57,9 @@ class Main:
 			return question, solution, "dependent"
 
 	def get_word_question(self):
-		with open('../word-questions/questions.txt') as q:
+		with open('../word-questions/questions.txt', 'r') as q:
 			questions = q.readlines()
-		with open('../word-questions/solutions.txt') as s:
+		with open('../word-questions/solutions.txt', 'r') as s:
 			solutions = s.readlines()
 		index = random.randint(0, min(len(questions), len(solutions) - 1))
 		question = self.format_raw_question(questions[index])
