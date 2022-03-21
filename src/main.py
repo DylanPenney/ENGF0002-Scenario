@@ -24,7 +24,7 @@ class Main:
 		else:
 			# dependent events
 			AorB = -1
-			while not AorB >= max(A, B): # Due to random element in P(A ∩ B) for dependent events
+			while (AorB < max(A, B)) or (AorB > 1): # Due to random element in P(A ∩ B) for dependent events
 				AandB = self.round_to_dp(B * random.uniform(0.01, 1), 2) # P(A | B) = P(A ∩ B) / P(B) --> P(A ∩ B) = P(B) * P(A | B)
 				AorB = self.round_to_dp(A + B - AandB, 2)
 			
@@ -44,9 +44,9 @@ class Main:
 
 	# Provides interface with a random question and answer from the selection of warm up questions
 	def get_starter_question(self):
-		with open('../warm-up-questions/starter-questions/starter-questions.txt', 'r') as q:
+		with open('../warm-up-questions/starter-questions.txt', 'r') as q:
 			questions = q.readlines()
-		with open('../warm-up-questions/starter-questions/starter-solutions.txt', 'r') as s:
+		with open('../warm-up-questions/starter-solutions.txt', 'r') as s:
 			solutions = s.readlines()
 		index = random.randint(0, min(len(questions), len(solutions) - 1))
 		question = self.format_raw_question(questions[index])
