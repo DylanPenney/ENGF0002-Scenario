@@ -2,59 +2,66 @@ import random
 
 from tkinter import *
 import tkinter as tk
-root = Tk()
-
-# specify size of window.
-root.geometry("500x500")
-bg_colour =  "#f5f5dc"
-root.configure(bg = bg_colour)
- 
-# Create text widget and specify size.
-T = Text(root, height = 3, width = 500)
- 
-# Create label
-l = Label(root, text = "Maths Question Bank")
-l.config(font =("Courier", 16,'bold'))
-l.config(foreground = "blue")
-l.config(background = "#f5f5dc")
- 
-Intro = """This question bank focuses on the probability and sets topic.
-You can choose between starter and word questions.
-You can also create your own questions."""
- 
-def openStarterWindow():
-    starterWindow = Toplevel(root)
-    starterWindow.title("Starter Question")
-    starterWindow.geometry("500x500")
-    Label(starterWindow, text = "Starter Question: ").pack()
-
-
-    
-    
-b1 = Button(root, text = "Generate Starter Question",command = openStarterWindow)
- 
-
-b2 = Button(root, text = "Generate Word Question",command = root.destroy)
-
-b3 = Button(root, text = "Create Question",command = root.destroy)
-
- 
-l.pack()
-T.pack()
-b1.pack()
-b2.pack()
-b3.pack()
- 
-# Insert The Fact.
-T.insert(tk.END, Intro)
-
-tk.mainloop()
 
 class Main:
 	def __init__(self):
-		while True:
-			self.starter_question()
-			# self.word_question()
+		self.root = tk.Tk()
+		self.root.title("Probability Question Bank")
+		self.root.resizable(False, False)
+		self.root.bind("<Escape>", self.toggle_fullscreen)
+
+		# Centering Window
+		self.window_height = 500
+		self.window_width = 500
+		self.screen_width = self.root.winfo_screenwidth()
+		self.screen_height = self.root.winfo_screenheight()
+		self.x_coord = int((self.screen_width/2) - (self.window_width/2))
+		self.y_coord = int((self.screen_height/2) - (self.window_height/2))
+		self.resize_to_normal()
+
+		background_colour =  "#f5f5dc"
+		self.root.configure(bg = background_colour)
+		self.notfullscreen = True
+		# Create text widget and specify size.
+		T = Text(self.root, height = 3, width = 500)
+		# Create label
+		l = Label(self.root, text = "Maths Question Bank")
+		l.config(font =("Courier", 16,'bold'))
+		l.config(foreground = "blue")
+		l.config(background = "#f5f5dc")
+		Intro = """Welcome to the question bank - this question bank consists of probability questions on two levels, those being Warm Up and Word questions. You also have the ability to create your own questions."""
+		 
+		b1 = Button(self.root, text = "Generate Starter Question",command = self.openStarterWindow)
+
+		b2 = Button(self.root, text = "Generate Word Question",command = self.root.destroy)
+
+		b3 = Button(self.root, text = "Create Question",command = self.root.destroy)
+		 
+		l.pack()
+		T.pack()
+		b1.pack()
+		b2.pack()
+		b3.pack()
+		 
+		# Insert The Fact.
+		T.insert(tk.END, Intro)
+
+		self.root.mainloop()
+
+	def toggle_fullscreen(self, event=None):
+		self.notfullscreen = not self.notfullscreen
+		self.root.attributes("-fullscreen", self.notfullscreen)
+		if not self.notfullscreen:
+			self.resize_to_normal()
+
+	def resize_to_normal(self, event=None):
+		self.root.geometry(f"{self.window_width}x{self.window_height}+{self.x_coord}+{self.y_coord}")
+
+	def openStarterWindow(self):
+		    starterWindow = Toplevel(root)
+		    starterWindow.title("Starter Question")
+		    starterWindow.geometry("500x500")
+		    Label(starterWindow, text = "Starter Question: ").pack()
 
 	# Acts as a menu for questions (warm-up)
 	def starter_question(self):
