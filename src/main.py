@@ -1,5 +1,55 @@
 import random
 
+from tkinter import *
+import tkinter as tk
+root = Tk()
+
+# specify size of window.
+root.geometry("500x500")
+bg_colour =  "#f5f5dc"
+root.configure(bg = bg_colour)
+ 
+# Create text widget and specify size.
+T = Text(root, height = 3, width = 500)
+ 
+# Create label
+l = Label(root, text = "Maths Question Bank")
+l.config(font =("Courier", 16,'bold'))
+l.config(foreground = "blue")
+l.config(background = "#f5f5dc")
+ 
+Intro = """This question bank focuses on the probability and sets topic.
+You can choose between starter and word questions.
+You can also create your own questions."""
+ 
+def openStarterWindow():
+    starterWindow = Toplevel(root)
+    starterWindow.title("Starter Question")
+    starterWindow.geometry("500x500")
+    Label(starterWindow, text = "Starter Question: ").pack()
+
+
+    
+    
+b1 = Button(root, text = "Generate Starter Question",command = openStarterWindow)
+ 
+
+b2 = Button(root, text = "Generate Word Question",command = root.destroy)
+
+b3 = Button(root, text = "Create Question",command = root.destroy)
+
+ 
+l.pack()
+T.pack()
+b1.pack()
+b2.pack()
+b3.pack()
+ 
+# Insert The Fact.
+T.insert(tk.END, Intro)
+
+tk.mainloop()
+
 class Main:
 	def __init__(self):
 		while True:
