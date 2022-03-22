@@ -10,14 +10,14 @@ class Main:
 		self.main_menu_text = ("Welcome to the question bank.\n"
 			"This question bank consists of probability questions on two levels, "
 			"those being Warm Up and Word questions.\n"
-			"You also have the ability to create your own questions."
-			)
+			"You also have the ability to create your own questions.")
 		self.title_font = ("Arial", 24, "bold")
 		self.text_font = ("Arial", 16)
 		self.background_colour = "#f5f5dc" # F2F2F2" # Cultured
 		self.title_colour = "#226CE0" # Celtic Blue
 		self.text_colour = "#226CE0" # Celtic Blue
 		self.button_colour = "white"
+		self.notfullscreen = False
 
 		self.root = tk.Tk()
 		self.root.title("Probability Question Bank")
@@ -30,13 +30,12 @@ class Main:
 		screen_height = self.root.winfo_screenheight()
 		self.x_coord = int((screen_width/2) - (self.window_width/2))
 		self.y_coord = int((screen_height/2) - (self.window_height/2))
-		self.resize_to_normal()
+		self.resize_to_normal(self.root)
 
 		self.root.configure(bg = self.background_colour)
-		self.notfullscreen = False
 
 		# Create label
-		title = Label(self.root, text = "Maths Question Bank")
+		title = Label(self.root, text = "Probability Question Bank")
 		title.configure(font = self.title_font)
 		title.configure(foreground = self.title_colour)
 		title.configure(background = self.background_colour)
@@ -68,19 +67,44 @@ class Main:
 		self.notfullscreen = not self.notfullscreen
 		self.root.attributes("-fullscreen", self.notfullscreen)
 		if not self.notfullscreen:
-			self.resize_to_normal()
+			self.resize_to_normal(self.root)
 
-	def resize_to_normal(self, event=None):
-		self.root.geometry(f"{self.window_width}x{self.window_height}+{self.x_coord}+{self.y_coord}")
+	# Need seperate func for each possible window
+	def toggle_fullscreen_starter(self, event=None):
+		self.notfullscreen_starter = not self.notfullscreen_starter
+		self.starterWindow.attributes("-fullscreen", self.notfullscreen_starter)
+		if not self.notfullscreen_starter:
+			self.resize_to_normal(self.starterWindow)
+
+	def resize_to_normal(self, window, event=None):
+		window.geometry(f"{self.window_width}x{self.window_height}+{self.x_coord}+{self.y_coord}")
 
 	def openStarterWindow(self):
-			response = self.starter_question()
-			question = response[0]
-			answer = response[1]
-			starterWindow = Toplevel(self.root)
-			starterWindow.title("Starter Question")
-			starterWindow.geometry("500x500")
-			Label(starterWindow, text = f"Starter Question: {self.starter_question()}").pack()
+			question, solution = self.starter_question()
+
+			self.starterWindow = Toplevel(self.root)
+			self.starterWindow.title("Starter Question")
+			self.starterWindow.bind("<Escape>", self.toggle_fullscreen_starter)
+			self.notfullscreen_starter = False
+
+			self.resize_to_normal(self.starterWindow)
+			self.starterWindow.configure(background = self.background_colour)
+
+			title = Label(self.starterWindow, text = "Starter Question")
+			title.configure(font = self.title_font)
+			title.configure(foreground = self.title_colour)
+			title.configure(background = self.background_colour)
+			title.pack(pady = 20)
+
+			# Display Question
+			question_box = Text(self.starterWindow, height = 3, width = 500, font = self.text_font, wrap=WORD)
+			question_box.tag_configure("tag_name", justify='center')
+			question_box.insert("1.0", question)
+			question_box.configure(foreground = self.text_colour)
+			question_box.configure(background = self.background_colour)
+			question_box.configure(highlightthickness = 0, borderwidth=0)
+			question_box.tag_add("tag_name", "1.0", "end")
+			question_box.pack(pady = 10)
 
 	# Acts as a menu for questions (warm-up)
 	def starter_question(self):
