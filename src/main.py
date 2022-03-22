@@ -53,7 +53,7 @@ class Main:
 
 	 	# Create buttons
 		button_names = ["Generate Starter Question", "Generate Word Question", "Create Your Own Question"]
-		button_functions = [self.openStarterWindow, self.root.destroy, self.root.destroy]
+		button_functions = [self.openStarterWindow, self.openWordWindow, self.root.destroy]
 		buttons = []
 		for i in range (0, 3):
 			buttons.append(Button(self.root, text=button_names[i], command=button_functions[i]))
@@ -75,6 +75,12 @@ class Main:
 		self.starterWindow.attributes("-fullscreen", self.notfullscreen_starter)
 		if not self.notfullscreen_starter:
 			self.resize_to_normal(self.starterWindow)
+
+	def	toggle_fullscreen_word(self):
+		self.notfullscreen_word = not self.notfullscreen_word
+		self.wordWindow.attributes("-fullscreen", self.notfullscreen_word)
+		if not self.notfullscreen_word:
+			self.resize_to_normal(self.wordWindow)
 
 	def resize_to_normal(self, window, event=None):
 		window.geometry(f"{self.window_width}x{self.window_height}+{self.x_coord}+{self.y_coord}")
@@ -105,6 +111,37 @@ class Main:
 			question_box.configure(highlightthickness = 0, borderwidth=0)
 			question_box.tag_add("tag_name", "1.0", "end")
 			question_box.pack(pady = 10)
+
+			# Need to do input
+
+	def openWordWindow(self):
+		question, solution = self.word_question()
+
+		self.wordWindow = Toplevel(self.root)
+		self.wordWindow.title("Word Question")
+		self.wordWindow.bind("<Escape>", self.toggle_fullscreen_word)
+		self.notfullscreen_word = False
+
+		self.resize_to_normal(self.wordWindow)
+		self.wordWindow.configure(background = self.background_colour)
+
+		title = Label(self.wordWindow, text = "Word Question")
+		title.configure(font = self.title_font)
+		title.configure(foreground = self.title_colour)
+		title.configure(background = self.background_colour)
+		title.pack(pady = 20)
+
+		# Display Question
+		question_box = Text(self.wordWindow, height = 3, width = 500, font = self.text_font, wrap=WORD)
+		question_box.tag_configure("tag_name", justify='center')
+		question_box.insert("1.0", question)
+		question_box.configure(foreground = self.text_colour)
+		question_box.configure(background = self.background_colour)
+		question_box.configure(highlightthickness = 0, borderwidth=0)
+		question_box.tag_add("tag_name", "1.0", "end")
+		question_box.pack(pady = 10)
+
+		# Need to do input
 
 	# Acts as a menu for questions (warm-up)
 	def starter_question(self):
@@ -140,7 +177,7 @@ class Main:
 
 		question = pair[0].replace("R1", str(random_numbers[0])).replace("R2", str(random_numbers[1]))
 		solution = self.round_to_dp(eval(pair[1]), 2)
-		self.check_solution(question, solution)
+		return question, solution
 
 	# Provides interface with a random question and answer from the selection of warm up questions
 	def get_starter_question(self):
