@@ -5,46 +5,57 @@ import tkinter as tk
 
 class Main:
 	def __init__(self):
+
+		# Config
+		self.main_menu_text = ("Welcome to the question bank.\n"
+			"This question bank consists of probability questions on two levels, "
+			"those being Warm Up and Word questions.\n"
+			"You also have the ability to create your own questions."
+			)
+		self.title_font = ("Arial", 24, "bold")
+		self.text_font = ("Arial", 16)
+		self.background_colour = "#F2F2F2" # Cultured
+		self.title_colour = "#226CE0" # Celtic Blue
+		self.text_colour = "#226CE0" # Celtic Blue
+
 		self.root = tk.Tk()
 		self.root.title("Probability Question Bank")
-		self.root.resizable(False, False)
 		self.root.bind("<Escape>", self.toggle_fullscreen)
 
 		# Centering Window
-		self.window_height = 500
-		self.window_width = 500
-		self.screen_width = self.root.winfo_screenwidth()
-		self.screen_height = self.root.winfo_screenheight()
-		self.x_coord = int((self.screen_width/2) - (self.window_width/2))
-		self.y_coord = int((self.screen_height/2) - (self.window_height/2))
+		self.window_height = 600
+		self.window_width = 600
+		screen_width = self.root.winfo_screenwidth()
+		screen_height = self.root.winfo_screenheight()
+		self.x_coord = int((screen_width/2) - (self.window_width/2))
+		self.y_coord = int((screen_height/2) - (self.window_height/2))
 		self.resize_to_normal()
 
-		background_colour =  "#f5f5dc"
-		self.root.configure(bg = background_colour)
-		self.notfullscreen = True
-		# Create text widget and specify size.
-		T = Text(self.root, height = 3, width = 500)
+		self.root.configure(bg = self.background_colour)
+		self.notfullscreen = False
+
 		# Create label
-		l = Label(self.root, text = "Maths Question Bank")
-		l.config(font =("Courier", 16,'bold'))
-		l.config(foreground = "blue")
-		l.config(background = "#f5f5dc")
-		Intro = """Welcome to the question bank - this question bank consists of probability questions on two levels, those being Warm Up and Word questions. You also have the ability to create your own questions."""
-		 
-		b1 = Button(self.root, text = "Generate Starter Question",command = self.openStarterWindow)
+		title = Label(self.root, text = "Maths Question Bank")
+		title.config(font = self.title_font)
+		title.config(foreground = self.title_colour)
+		title.config(background = self.background_colour)
+		title.pack()
 
-		b2 = Button(self.root, text = "Generate Word Question",command = self.root.destroy)
-
-		b3 = Button(self.root, text = "Create Question",command = self.root.destroy)
-		 
-		l.pack()
+		# Create text widget, specify size, center it and populate it
+		T = Text(self.root, height = 3, width = 500, font = self.text_font, wrap=WORD)
+		T.tag_configure("tag_name", justify='center')
+		T.insert("1.0", self.main_menu_text)
+		T.configure(foreground = self.text_colour)
+		T.configure(background = self.background_colour)
+		T.config(highlightthickness = 0, borderwidth=0)
+		T.tag_add("tag_name", "1.0", "end")
 		T.pack()
-		b1.pack()
-		b2.pack()
-		b3.pack()
-		 
-		# Insert The Fact.
-		T.insert(tk.END, Intro)
+
+	 	# Create buttons
+		button_names = ["Generate Starter Question", "Generate Word Question", "Create Your Own Question"]
+		button_functions = [self.openStarterWindow, self.root.destroy, self.root.destroy]
+		for i in range (0, 3):
+			Button(self.root, text=button_names[i], command=button_functions[i]).pack()
 
 		self.root.mainloop()
 
@@ -58,10 +69,13 @@ class Main:
 		self.root.geometry(f"{self.window_width}x{self.window_height}+{self.x_coord}+{self.y_coord}")
 
 	def openStarterWindow(self):
-		    starterWindow = Toplevel(root)
-		    starterWindow.title("Starter Question")
-		    starterWindow.geometry("500x500")
-		    Label(starterWindow, text = "Starter Question: ").pack()
+			response = self.starter_question()
+			question = response[0]
+			answer = response[1]
+			starterWindow = Toplevel(self.root)
+			starterWindow.title("Starter Question")
+			starterWindow.geometry("500x500")
+			Label(starterWindow, text = f"Starter Question: {self.starter_question()}").pack()
 
 	# Acts as a menu for questions (warm-up)
 	def starter_question(self):
@@ -88,7 +102,7 @@ class Main:
 		question = data[0].replace("PA", str(A)).replace("PB", str(B)).replace("AorB", str(AorB)).replace("AandB", str(AandB)) # String formatting
 		solution = self.round_to_dp(eval(data[1]), 2)
 		
-		self.check_solution(question, solution)
+		return question, solution
 
 	# Acts as a menu for questions (word)
 	def word_question(self):
