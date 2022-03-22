@@ -14,9 +14,10 @@ class Main:
 			)
 		self.title_font = ("Arial", 24, "bold")
 		self.text_font = ("Arial", 16)
-		self.background_colour = "#F2F2F2" # Cultured
+		self.background_colour = "#f5f5dc" # F2F2F2" # Cultured
 		self.title_colour = "#226CE0" # Celtic Blue
 		self.text_colour = "#226CE0" # Celtic Blue
+		self.button_colour = "white"
 
 		self.root = tk.Tk()
 		self.root.title("Probability Question Bank")
@@ -36,10 +37,10 @@ class Main:
 
 		# Create label
 		title = Label(self.root, text = "Maths Question Bank")
-		title.config(font = self.title_font)
-		title.config(foreground = self.title_colour)
-		title.config(background = self.background_colour)
-		title.pack()
+		title.configure(font = self.title_font)
+		title.configure(foreground = self.title_colour)
+		title.configure(background = self.background_colour)
+		title.pack(pady = 20)
 
 		# Create text widget, specify size, center it and populate it
 		T = Text(self.root, height = 3, width = 500, font = self.text_font, wrap=WORD)
@@ -47,15 +48,19 @@ class Main:
 		T.insert("1.0", self.main_menu_text)
 		T.configure(foreground = self.text_colour)
 		T.configure(background = self.background_colour)
-		T.config(highlightthickness = 0, borderwidth=0)
+		T.configure(highlightthickness = 0, borderwidth=0)
 		T.tag_add("tag_name", "1.0", "end")
-		T.pack()
+		T.pack(pady = 10)
 
 	 	# Create buttons
 		button_names = ["Generate Starter Question", "Generate Word Question", "Create Your Own Question"]
 		button_functions = [self.openStarterWindow, self.root.destroy, self.root.destroy]
+		buttons = []
 		for i in range (0, 3):
-			Button(self.root, text=button_names[i], command=button_functions[i]).pack()
+			buttons.append(Button(self.root, text=button_names[i], command=button_functions[i]))
+			# Button must be same colour as background otherwise werid black box appears (NO FIX bug in MACOS)
+			buttons[i].configure(highlightbackground = self.background_colour, foreground = self.text_colour)
+			buttons[i].pack(pady=5)
 
 		self.root.mainloop()
 
