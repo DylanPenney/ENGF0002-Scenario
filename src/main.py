@@ -1,5 +1,3 @@
-# SUBMIT 
-# RETRY
 # USER CREATE BUTTOM
 
 import random
