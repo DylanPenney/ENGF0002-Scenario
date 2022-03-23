@@ -151,7 +151,7 @@ class Main:
 		T.pack(pady = 10)
 
 	def openWordWindow(self):
-		question, solution = self.word_question()
+		self.word_question, self.word_solution = self.word_question_controller()
 
 		self.wordWindow = Toplevel(self.root)
 		self.wordWindow.title("Word Question")
@@ -170,7 +170,7 @@ class Main:
 		# Display Question
 		question_box = Text(self.wordWindow, height = 3, width = 500, font = self.text_font, wrap=WORD)
 		question_box.tag_configure("tag_name", justify='center')
-		question_box.insert("1.0", question)
+		question_box.insert("1.0", self.word_question)
 		question_box.configure(foreground = self.text_colour)
 		question_box.configure(background = self.background_colour)
 		question_box.configure(highlightthickness = 0, borderwidth=0)
@@ -178,6 +178,32 @@ class Main:
 		question_box.pack(pady = 10)
 
 		# Need to do input
+		self.input_box_word = Entry(self.wordWindow, font = self.text_font, background = 'grey')
+		self.input_box_word.pack()
+		self.input_box_word.focus_set()
+
+		submit_button_word = Button(self.wordWindow, text="Submit", command=self.check_answer_word)
+		submit_button_word.configure(highlightbackground = self.background_colour, foreground = self.text_colour)
+		submit_button_word.pack(pady = 5)
+
+		retry_button_word = Button(self.wordWindow, text="New Question", command=self.retry_word)
+		retry_button_word.configure(highlightbackground = self.background_colour, foreground = self.text_colour)
+		retry_button_word.pack(pady = 5)
+
+	def check_answer_word(self):
+		answer = float(self.input_box_word.get())
+		# Create text widget, specify size, center it and populate it
+		T = Text(self.wordWindow, height = 3, width = 500, font = self.text_font, wrap=WORD)
+		T.tag_configure("tag_name", justify='center')
+		if (self.round_to_dp(answer, 2) == self.word_solution):
+			T.insert("1.0", "Correct")
+		else:
+			T.insert("1.0", "Incorrect")
+		T.configure(foreground = self.text_colour)
+		T.configure(background = self.background_colour)
+		T.configure(highlightthickness = 0, borderwidth=0)
+		T.tag_add("tag_name", "1.0", "end")
+		T.pack(pady = 10)
 
 	# Acts as a menu for questions (warm-up)
 	def starter_question_controller(self):
@@ -207,7 +233,7 @@ class Main:
 		return question, solution
 
 	# Acts as a menu for questions (word)
-	def word_question(self):
+	def word_question_controller(self):
 		random_numbers = [random.randint(1, 10) for i in range(5)]
 		pair = self.get_word_question()
 
