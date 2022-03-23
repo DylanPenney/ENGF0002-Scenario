@@ -1,4 +1,5 @@
-# USER CREATE BUTTOM
+# MAIN MENU BUTTON
+# CREATE WORD QUESTIONS
 
 import random
 
@@ -53,10 +54,10 @@ class Main:
 		T.pack(pady = 10)
 
 	 	# Create buttons
-		button_names = ["Generate Starter Question", "Generate Word Question", "Create Your Own Question NOT WORKING"]
+		button_names = ["Generate Starter Question", "Generate Word Question", "Create Your Own Question"]
 		button_functions = [self.openStarterWindow, self.openWordWindow, self.open_create_window]
 		buttons = []
-		for i in range (0, 3):
+		for i in range (0, len(button_names)):
 			buttons.append(Button(self.root, text=button_names[i], command=button_functions[i]))
 			# Button must be same colour as background otherwise werid black box appears (NO FIX bug in MACOS)
 			buttons[i].configure(highlightbackground = self.background_colour, foreground = self.text_colour)
@@ -74,44 +75,44 @@ class Main:
 		window.geometry(f"{self.window_width}x{self.window_height}+{self.x_coord}+{self.y_coord}")
 
 	def openStarterWindow(self):
-			self.starter_question, self.starter_solution = self.starter_question_controller()
+		self.starter_question, self.starter_solution = self.starter_question_controller()
 
-			self.starterWindow = Toplevel(self.root)
-			self.starterWindow.title("Starter Question")
-			self.starterWindow.bind("<Escape>", self.toggle_fullscreen_starter)
-			self.fullscreen_starter = False
+		self.starterWindow = Toplevel(self.root)
+		self.starterWindow.title("Starter Question")
+		self.starterWindow.bind("<Escape>", self.toggle_fullscreen_starter)
+		self.fullscreen_starter = False
 
-			self.resize_to_normal(self.starterWindow)
-			self.starterWindow.configure(background = self.background_colour)
+		self.resize_to_normal(self.starterWindow)
+		self.starterWindow.configure(background = self.background_colour)
 
-			title = Label(self.starterWindow, text = "Starter Question")
-			title.configure(font = self.title_font)
-			title.configure(foreground = self.title_colour)
-			title.configure(background = self.background_colour)
-			title.pack(pady = 20)
+		title = Label(self.starterWindow, text = "Starter Question")
+		title.configure(font = self.title_font)
+		title.configure(foreground = self.title_colour)
+		title.configure(background = self.background_colour)
+		title.pack(pady = 20)
 
-			# Display Question
-			question_box = Text(self.starterWindow, height = 3, width = 500, font = self.text_font, wrap=WORD)
-			question_box.tag_configure("tag_name", justify='center')
-			question_box.insert("1.0", self.starter_question)
-			question_box.configure(foreground = self.text_colour)
-			question_box.configure(background = self.background_colour)
-			question_box.configure(highlightthickness = 0, borderwidth=0)
-			question_box.tag_add("tag_name", "1.0", "end")
-			question_box.pack(pady = 10)
+		# Display Question
+		question_box = Text(self.starterWindow, height = 3, width = 500, font = self.text_font, wrap=WORD)
+		question_box.tag_configure("tag_name", justify='center')
+		question_box.insert("1.0", self.starter_question)
+		question_box.configure(foreground = self.text_colour)
+		question_box.configure(background = self.background_colour)
+		question_box.configure(highlightthickness = 0, borderwidth=0)
+		question_box.tag_add("tag_name", "1.0", "end")
+		question_box.pack(pady = 10)
 
-			# Need to do input
-			self.input_box_starter = Entry(self.starterWindow, font = self.text_font, background = 'grey')
-			self.input_box_starter.pack()
-			self.input_box_starter.focus_set()
+		# Need to do input
+		self.input_box_starter = Entry(self.starterWindow, font = self.text_font, background = 'grey')
+		self.input_box_starter.pack()
+		self.input_box_starter.focus_set()
 
-			submit_button_starter = Button(self.starterWindow, text="Submit", command=self.check_answer_starter)
-			submit_button_starter.configure(highlightbackground = self.background_colour, foreground = self.text_colour)
-			submit_button_starter.pack(pady = 5)
+		submit_button_starter = Button(self.starterWindow, text="Submit", command=self.check_answer_starter)
+		submit_button_starter.configure(highlightbackground = self.background_colour, foreground = self.text_colour)
+		submit_button_starter.pack(pady = 5)
 
-			retry_button_starter = Button(self.starterWindow, text="New Question", command=self.retry_starter)
-			retry_button_starter.configure(highlightbackground = self.background_colour, foreground = self.text_colour)
-			retry_button_starter.pack(pady = 5)
+		retry_button_starter = Button(self.starterWindow, text="New Question", command=self.retry_starter)
+		retry_button_starter.configure(highlightbackground = self.background_colour, foreground = self.text_colour)
+		retry_button_starter.pack(pady = 5)
 
 	def retry_starter(self):
 		self.starterWindow.destroy()
@@ -218,14 +219,17 @@ class Main:
 		title.pack(pady = 20)
 
 		# Create buttons
-		button_names = ["Create Starter Question", "Create Word Question"]
-		button_functions = [self.open_create_starter_window, self.open_create_word_window]
+		button_names = ["Create Starter Question", "Create Word Question NOT WORKING", "Main Menu"]
+		button_functions = [self.open_create_starter_window, self.open_create_word_window, self.create_question_to_main_menu]
 		buttons = []
-		for i in range (0, 2):
+		for i in range (0, len(button_names)):
 			buttons.append(Button(self.create_window, text=button_names[i], command=button_functions[i]))
 			# Button must be same colour as background otherwise werid black box appears (NO FIX bug in MACOS)
 			buttons[i].configure(highlightbackground = self.background_colour, foreground = self.text_colour)
 			buttons[i].pack(pady=5)
+
+	def create_question_to_main_menu(self):
+		self.create_window.destroy()
 
 	def toggle_fullscreen_create(self, event=None):
 		self.fullscreen_create = not self.fullscreen_create
@@ -237,7 +241,7 @@ class Main:
 		self.create_starter_question, self.create_starter_solution = self.create_starter_controller()
 		self.create_starter_window = Toplevel(self.create_window)
 		self.create_starter_window.title("Create Warm Up Question")
-		self.create_window.bind("<Escape>", self.toggle_fullscreen_create_starter)
+		self.create_starter_window.bind("<Escape>", self.toggle_fullscreen_create_starter)
 
 		self.fullscreen_create_starter = False
 		self.resize_to_normal(self.create_starter_window)
@@ -270,9 +274,14 @@ class Main:
 				self.list_of_entries.append( (triple[0], triple[2], Entry(self.create_starter_window, font = self.text_font, background = 'grey') ))
 				self.list_of_entries[-1][-1].pack() # pack cannot be within the append statement otherwise none is returned
 
-		self.submit_button_create_starter = Button(self.create_starter_window, text="Submit", command=self.get_input_create_starter)
-		self.submit_button_create_starter.configure(highlightbackground = self.background_colour, foreground = self.text_colour)
-		self.submit_button_create_starter.pack(pady = 5)
+		button_names = ["Submit", "Main Menu"]
+		button_functions = [self.get_input_create_starter, self.create_starter_question_to_main_menu]
+		self.create_starter_buttons = []
+
+		for i in range(0, len(button_names)):
+			self.create_starter_buttons.append(Button(self.create_starter_window, text=button_names[i], command=button_functions[i]))
+			self.create_starter_buttons[i].configure(highlightbackground = self.background_colour, foreground = self.text_colour)
+			self.create_starter_buttons[i].pack(pady = 5)
 
 	def get_input_create_starter(self):
 
@@ -292,7 +301,8 @@ class Main:
 			entry[2].destroy()
 		for prompt in self.list_of_required_inputs:
 			prompt.destroy()
-		self.submit_button_create_starter.destroy()
+		for button in self.create_starter_buttons:
+			button.destroy()
 
 		question_box = Text(self.create_starter_window, height = 3, width = 500, font = self.text_font, wrap=WORD)
 		question_box.tag_configure("tag_name", justify='center')
@@ -308,13 +318,14 @@ class Main:
 		self.input_box_create_starter.pack()
 		self.input_box_create_starter.focus_set()
 
-		submit_button_create_starter_question = Button(self.create_starter_window, text="Submit", command=self.check_answer_create_starter)
-		submit_button_create_starter_question.configure(highlightbackground = self.background_colour, foreground = self.text_colour)
-		submit_button_create_starter_question.pack(pady = 5)
+		button_names = ["Submit", "New Question", "Main Menu"]
+		button_functions = [self.check_answer_create_starter, self.retry_create_starter, self.create_question_to_main_menu]
+		buttons = []
 
-		retry_button_starter = Button(self.create_starter_window, text="New Question", command=self.retry_create_starter)
-		retry_button_starter.configure(highlightbackground = self.background_colour, foreground = self.text_colour)
-		retry_button_starter.pack(pady = 5)
+		for i in range(0, len(button_names)):
+			buttons.append(Button(self.create_starter_window, text=button_names[i], command=button_functions[i]))
+			buttons[i].configure(highlightbackground = self.background_colour, foreground = self.text_colour)
+			buttons[i].pack(pady = 5)
 
 	def retry_create_starter(self):
 		self.create_starter_window.destroy()
@@ -334,12 +345,16 @@ class Main:
 		T.tag_add("tag_name", "1.0", "end")
 		T.pack(pady = 10)
 
-
 	def toggle_fullscreen_create_starter(self, event=None):
+		print("fullscreen")
 		self.fullscreen_create_starter = not self.fullscreen_create_starter
 		self.create_starter_window.attributes("-fullscreen", self.fullscreen_create_starter)
 		if not self.fullscreen_create_starter:
 			self.resize_to_normal(self.create_starter_window)
+
+	def create_starter_question_to_main_menu(self):
+		self.create_starter_window.destroy()
+		self.create_window.destroy()
 
 	def open_create_word_window(self):
 		pass
