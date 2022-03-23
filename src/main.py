@@ -1,4 +1,3 @@
-# MAIN MENU BUTTON
 # CREATE WORD QUESTIONS
 
 import random
@@ -7,6 +6,8 @@ from tkinter import *
 import tkinter as tk
 
 class Main:
+
+	# GUI Functions
 	def __init__(self):
 		# Config
 		self.main_menu_text = ("Welcome to the question bank.\n"
@@ -335,7 +336,7 @@ class Main:
 		# Create text widget, specify size, center it and populate it
 		T = Text(self.create_starter_window, height = 3, width = 500, font = self.text_font, wrap=WORD)
 		T.tag_configure("tag_name", justify='center')
-		if (self.round_to_dp(answer, 2) == eval(self.create_starter_solution)):
+		if (self.round_to_dp(answer, 2) == self.round_to_dp(eval(self.create_starter_solution)), 2):
 			T.insert("1.0", "Correct")
 		else:
 			T.insert("1.0", "Incorrect")
@@ -358,6 +359,8 @@ class Main:
 
 	def open_create_word_window(self):
 		pass
+
+	# Backend
 
 	# Acts as a menu for questions (warm-up)
 	def starter_question_controller(self):
