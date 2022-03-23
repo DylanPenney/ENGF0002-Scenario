@@ -75,6 +75,8 @@ class Main:
 		self.fullscreen = not self.fullscreen
 		self.root.attributes("-fullscreen", self.fullscreen)
 		
+		# If window has been un-fullscreened,
+		# window is centered and resized
 		if not self.fullscreen:
 			self.resize_to_normal(self.root)
 
@@ -216,17 +218,23 @@ class Main:
 			buttons[i].configure(highlightbackground = self.background_colour, foreground = self.text_colour)
 			buttons[i].pack(pady = 5)
 
+	# Allows user to reselect question type
 	def retry_word(self):
 
 		self.word_window.destroy()
 
+	# Checks and displays whether user's answer is correct
 	def check_answer_word(self):
 
+		# Gets user's answer from input box
 		answer = float(self.input_box_word.get())
+
 		# Create text widget, specify size, center it and populate it
 		T = Text(self.word_window, height = 3, width = 500, font = self.text_font, wrap=WORD)
 		T.tag_configure("tag_name", justify='center')
 		
+		# Displays "Correct" if user's answer is within 0.005 of the correct answer,
+		# otherwise "Incorrect"
 		if (self.round_to_dp(answer, 2) == self.word_solution):
 			T.insert("1.0", "Correct")
 		else:
@@ -243,20 +251,24 @@ class Main:
 
 		self.fullscreen_word = not self.fullscreen_word
 		self.word_window.attributes("-fullscreen", self.fullscreen_word)
+
+		# If window has been un-fullscreened,
+		# window is centered and resized
 		if not self.fullscreen_word:
 			self.resize_to_normal(self.word_window)
 
-
+# Functions for allowing the user to create questions
 	def open_create_window(self):
 
+		# Config
 		self.create_window = Toplevel(self.root)
 		self.create_window.title("Create Question")
 		self.create_window.bind("<Escape>", self.toggle_fullscreen_create)
 		self.fullscreen_create = False
-
 		self.resize_to_normal(self.create_window)
 		self.create_window.configure(background = self.background_colour)
 
+		# Create label
 		title = Label(self.create_window, text = "Create Question")
 		title.configure(font = self.title_font)
 		title.configure(foreground = self.title_colour)
@@ -271,10 +283,10 @@ class Main:
 		for i in range (0, len(button_names)):
 
 			buttons.append(Button(self.create_window, text=button_names[i], command=button_functions[i]))
-			# Button must be same colour as background otherwise werid black box appears (NO FIX bug in MACOS)
 			buttons[i].configure(highlightbackground = self.background_colour, foreground = self.text_colour)
 			buttons[i].pack(pady=5)
 
+	# Method that 'sends' user to main menu
 	def create_question_to_main_menu(self):
 
 		self.create_window.destroy()
@@ -284,21 +296,27 @@ class Main:
 
 		self.fullscreen_create = not self.fullscreen_create
 		self.create_window.attributes("-fullscreen", self.fullscreen_create)
+		
+		# If window has been un-fullscreened,
+		# window is centered and resized
 		if not self.fullscreen_create:
 			self.resize_to_normal(self.create_window)
 
-
+# Functions for allowing the user to create a Warm Up Question
 	def open_create_starter_window(self):
 
+		# Get question and answer templates
 		self.create_starter_question, self.create_starter_solution = self.create_starter_controller()
+		
+		# Config
 		self.create_starter_window = Toplevel(self.create_window)
 		self.create_starter_window.title("Create Warm Up Question")
 		self.create_starter_window.bind("<Escape>", self.toggle_fullscreen_create_starter)
-
 		self.fullscreen_create_starter = False
 		self.resize_to_normal(self.create_starter_window)
 		self.create_starter_window.configure(background = self.background_colour)
 
+		# Create label
 		title = Label(self.create_starter_window, text = "Create Starter Question")
 		title.configure(font = self.title_font)
 		title.configure(foreground = self.title_colour)
@@ -306,11 +324,14 @@ class Main:
 		title.pack(pady = 20)
 
 		# A and B and A or B must be first otherwise they get replaced by A, B
-		self.potential_inputs = [["AandB", "P(A ∩ B)", "AandB"], ["AorB", "P(A ∪ B)", "AorB"], ["PA", "P(A)", "A"], ["PB", "P(B)", "B"]] # [[Var in question, var in text, var in sol]]
+		# [[Variable in question, variable in text, variable in sol]]
+		self.potential_inputs = [["AandB", "P(A ∩ B)", "AandB"], ["AorB", "P(A ∪ B)", "AorB"], ["PA", "P(A)", "A"], ["PB", "P(B)", "B"]]
 
+		# Storing widgets
 		self.list_of_entries = []
 		self.list_of_required_inputs = []
 
+		# Get user's values for the required variable
 		for triple in self.potential_inputs:
 
 			if triple[0] in self.create_starter_question:
@@ -325,8 +346,9 @@ class Main:
 
 				self.list_of_required_inputs.append(T)
 				self.list_of_entries.append( (triple[0], triple[2], Entry(self.create_starter_window, font = self.text_font, background = 'grey')) )
-				self.list_of_entries[-1][-1].pack() # pack cannot be within the append statement otherwise none is returned
+				self.list_of_entries[-1][-1].pack() # Pack cannot be within the append statement otherwise none is returned
 
+		# Create buttons
 		button_names = ["Submit", "Main Menu"]
 		button_functions = [self.get_input_create_starter, self.create_starter_question_to_main_menu]
 		self.create_starter_buttons = []
@@ -337,11 +359,13 @@ class Main:
 			self.create_starter_buttons[i].configure(highlightbackground = self.background_colour, foreground = self.text_colour)
 			self.create_starter_buttons[i].pack(pady = 5)
 
+	# Method that gets the users values and,
+	# inserts them into question and answer formula
 	def get_input_create_starter(self):
 
 		# x = question place holder
 		# y = solution place holder
-		# z = user's input fo that placeholder
+		# z = user's input for that placeholder
 		for (x, y, z) in self.list_of_entries:
 
 			self.create_starter_question = self.create_starter_question.replace(x, z.get())
@@ -349,6 +373,7 @@ class Main:
 
 		self.display_question_create_starter()
 
+	# Method that clears the window and displays the question for the user
 	def display_question_create_starter(self):
 
 		# Clear screen
@@ -364,6 +389,7 @@ class Main:
 
 			button.destroy()
 
+		# Display question
 		question_box = Text(self.create_starter_window, height = 3, width = 500, font = self.text_font, wrap=WORD)
 		question_box.tag_configure("tag_name", justify='center')
 		question_box.insert("1.0", self.create_starter_question)
@@ -373,11 +399,12 @@ class Main:
 		question_box.tag_add("tag_name", "1.0", "end")
 		question_box.pack(pady = 10)
 
-		# Need to do input
+		# User input
 		self.input_box_create_starter = Entry(self.create_starter_window, font = self.text_font, background = 'grey')
 		self.input_box_create_starter.pack()
 		self.input_box_create_starter.focus_set()
 
+		# Create buttons
 		button_names = ["Submit", "New Question", "Main Menu"]
 		button_functions = [self.check_answer_create_starter, self.retry_create_starter, self.create_starter_question_to_main_menu]
 		buttons = []
@@ -388,17 +415,23 @@ class Main:
 			buttons[i].configure(highlightbackground = self.background_colour, foreground = self.text_colour)
 			buttons[i].pack(pady = 5)
 
+	# Allows user to reselct question type
 	def retry_create_starter(self):
 
 		self.create_starter_window.destroy()
 
+	# Checks and displays whether user's answer is correct
 	def check_answer_create_starter(self):
 
+		# Gets user's answer from input box
 		answer = float(self.input_box_create_starter.get())
+
 		# Create text widget, specify size, center it and populate it
 		T = Text(self.create_starter_window, height = 3, width = 500, font = self.text_font, wrap=WORD)
 		T.tag_configure("tag_name", justify='center')
 
+		# Displays "Correct" if user's answer is within 0.005 of the correct answer,
+		# otherwise "Incorrect"
 		if (self.round_to_dp(answer, 2) == self.round_to_dp(eval(self.create_starter_solution), 2)):
 			T.insert("1.0", "Correct")
 		else:
@@ -416,37 +449,46 @@ class Main:
 		self.fullscreen_create_starter = not self.fullscreen_create_starter
 		self.create_starter_window.attributes("-fullscreen", self.fullscreen_create_starter)
 		
+		# If window has been un-fullscreened,
+		# window is centered and resized
 		if not self.fullscreen_create_starter:
 			self.resize_to_normal(self.create_starter_window)
 
+	# Method that 'sends' user to main menu
 	def create_starter_question_to_main_menu(self):
 
 		self.create_starter_window.destroy()
 		self.create_window.destroy()
 
-# Functions for allowing the user to create a word question.
+# Functions for allowing the user to create a Word Question
 	def open_create_word_window(self):
 
+		# Get question and answer templates
 		self.create_word_question, self.create_word_solution = self.create_word_question_controller()
-		print(self.create_word_question)
+
+		# Config
 		self.create_word_window = Toplevel(self.create_window)
 		self.create_word_window.title("Create Warm Up Question")
 		self.create_word_window.bind("<Escape>", self.toggle_fullscreen_create_word)
-
 		self.fullscreen_create_word = False
 		self.resize_to_normal(self.create_word_window)
 		self.create_word_window.configure(background = self.background_colour)
 
+		# Create Label
 		title = Label(self.create_word_window, text = "Create Word Question")
 		title.configure(font = self.title_font)
 		title.configure(foreground = self.title_colour)
 		title.configure(background = self.background_colour)
 		title.pack(pady = 20)
 
+		# [Variable in question/solution]
 		self.list_of_create_word_potential_inputs = ["R1", "R2"]
+		
+		# Storing widgets
 		self.list_of_create_word_entry_prompts = []
 		self.list_of_create_word_Entry_widgets = []
 
+		# Get user's values for the required variable
 		for possibility in self.list_of_create_word_potential_inputs:
 
 			if possibility in self.create_word_question:
@@ -463,6 +505,7 @@ class Main:
 				self.list_of_create_word_Entry_widgets.append( (possibility, Entry(self.create_word_window, font = self.text_font, background = 'grey')) )
 				self.list_of_create_word_Entry_widgets[-1][-1].pack()
 
+		# Create buttons
 		button_names = ["Submit", "Main Menu"]
 		button_functions = [self.get_input_create_word, self.create_word_question_to_main_menu]
 		self.create_word_buttons = []
@@ -473,11 +516,15 @@ class Main:
 			self.create_word_buttons[i].configure(highlightbackground = self.background_colour, foreground = self.text_colour)
 			self.create_word_buttons[i].pack(pady = 5)
 
-
+	# Method that gets the users values and,
+	# inserts them into question and answer formula
 	def get_input_create_word(self):
 		
+		# Stores users values for placeholders
 		self.replacements = []
 
+		# x = question placeholder
+		# y = user's input for that placeholder
 		for (x, y) in self.list_of_create_word_Entry_widgets:
 
 			self.create_word_question = self.create_word_question.replace(x, y.get())
@@ -485,6 +532,7 @@ class Main:
 
 		self.display_question_create_word()
 
+	# Method that clears the window and displays the question for the user
 	def display_question_create_word(self):
 		
 		# Clear screen
@@ -500,6 +548,7 @@ class Main:
 		
 			button.destroy()
 
+		# Display question
 		question_box = Text(self.create_word_window, height = 3, width = 500, font = self.text_font, wrap=WORD)
 		question_box.tag_configure("tag_name", justify='center')
 		question_box.insert("1.0", self.create_word_question)
@@ -509,11 +558,12 @@ class Main:
 		question_box.tag_add("tag_name", "1.0", "end")
 		question_box.pack(pady = 10)
 
-		# Need to do input
+		# User input
 		self.input_box_create_word = Entry(self.create_word_window, font = self.text_font, background = 'grey')
 		self.input_box_create_word.pack()
 		self.input_box_create_word.focus_set()
 
+		# Create buttons
 		button_names = ["Submit", "New Question", "Main Menu"]
 		button_functions = [self.check_answer_create_word, self.retry_create_word, self.create_word_question_to_main_menu]
 		buttons = []
@@ -524,14 +574,19 @@ class Main:
 			buttons[i].configure(highlightbackground = self.background_colour, foreground = self.text_colour)
 			buttons[i].pack(pady = 5)
 
+	# Checks and displays whether user's answer is correct
 	def check_answer_create_word(self):
 
+		# Gets user's answer from input box
 		answer = float(self.input_box_create_word.get())
+
 		# Create text widget, specify size, center it and populate it
 		T = Text(self.create_word_window, height = 3, width = 500, font = self.text_font, wrap=WORD)
 		T.tag_configure("tag_name", justify='center')
 		print(answer, self.create_word_solution, eval(self.create_word_solution))
 		
+		# Displays "Correct" if user's answer is within 0.005 of the correct answer,
+		# otherwise "Incorrect"
 		if (self.round_to_dp(answer, 2) == self.round_to_dp(eval(self.create_word_solution), 2)):
 			T.insert("1.0", "Correct")
 		else:
@@ -543,6 +598,7 @@ class Main:
 		T.tag_add("tag_name", "1.0", "end")
 		T.pack(pady = 10)
 
+	# Allows user to reselect question type
 	def retry_create_word(self):
 
 		self.create_word_window.destroy()
@@ -553,9 +609,12 @@ class Main:
 		self.fullscreen_create_word = not self.fullscreen_create_word
 		self.create_word_window.attributes("-fullscreen", self.fullscreen_create_word)
 		
+		# If window has been un-fullscreened,
+		# window is centered and resized		
 		if not self.fullscreen_create_word:
 			self.resize_to_normal(self.create_word_window)
 
+	# Method that 'sends' user to main menu
 	def create_word_question_to_main_menu(self):
 		
 		self.create_word_window.destroy()
@@ -563,17 +622,20 @@ class Main:
 
 # Backend
 
-	# Interface between get_starter_question and GUI button
+	# Interface between get_starter_question and GUI buttons
 	def starter_question_controller(self):
 
+		# Gets details about question (question, formula, dependent/independent events)
 		data = self.get_starter_question()
+		
+		# Determines whether events are independent or dependent
 		independent_event = (data[2] == "independent")
 
-		# Regardless whether events are dependent or independent, P(A) and P(B) are calulated as such
+		# Generate random variables to be inserted
 		A = self.round_to_dp(random.uniform(0.1, 1.0), 2)
 		B = self.round_to_dp(random.uniform(0.1, 1.0), 2)
 
-		# P(A ∩ B) is only var to differ based on dependency
+		# P(A ∩ B) is only var to differ based on whether independent/dependent
 		if (independent_event):
 			# for independent events only
 			AandB = self.round_to_dp(A * B, 2)
@@ -582,28 +644,39 @@ class Main:
 			# dependent events
 			AorB = -1
 
-			while (AorB < max(A, B)) or (AorB > 1): # Due to random element in P(A ∩ B) for dependent events
+			# Due to random element in P(A ∩ B) for dependent events
+			while (AorB < max(A, B)) or (AorB > 1):
 				
 				AandB = self.round_to_dp(B * random.uniform(0.01, 1), 2) # P(A | B) = P(A ∩ B) / P(B) --> P(A ∩ B) = P(B) * P(A | B)
 				AorB = self.round_to_dp(A + B - AandB, 2)
 			
+		# Inserts the generated variables into the question body
 		question = data[0].replace("PA", str(A)).replace("PB", str(B)).replace("AorB", str(AorB)).replace("AandB", str(AandB)) # String formatting
+		
+		# Calculates a numerical answer
 		solution = self.round_to_dp(eval(data[1]), 2)
 		
 		return question, solution
 
-	# Interface between get_word_question and GUI button
+	# Interface between get_word_question and GUI buttons
 	def word_question_controller(self):
 		
+		# Generate random variables to be inserted
 		self.replacements = [random.randint(1, 10) for i in range(5)]
-		pair = self.get_word_question()
 
-		question = pair[0].replace("R1", str(self.replacements[0])).replace("R2", str(self.replacements[1]))
-		solution = self.round_to_dp(eval(pair[1]), 2)
+		# Get details about question (question, formula)
+		data = self.get_word_question()
+
+		# Inserts the generated variables into the question body
+		question = data[0].replace("R1", str(self.replacements[0])).replace("R2", str(self.replacements[1]))
+		
+		# Calculates a numerical answer
+		solution = self.round_to_dp(eval(data[1]), 2)
 		
 		return question, solution
 
-	# Helper function to act between get_starter_question and frontend
+	# Helper function to act between get_starter_question and frontend 
+	# when user creates a question
 	def create_starter_controller(self):
 
 		question, solution, create_independent = self.get_starter_question()
@@ -611,6 +684,7 @@ class Main:
 		return question, solution
 
 	# Helper function to act between get_word_question and frontend
+	# when user creates a question
 	def create_word_question_controller(self):
 
 		question, solution = self.get_word_question()
@@ -620,14 +694,18 @@ class Main:
 	# Generates a random starter question and formula for the answer
 	def get_starter_question(self):
 		
+		# Reads all possible question and formula templates
 		with open('../warm-up-questions/starter-questions.txt', 'r') as q:
 			questions = q.readlines()
 		with open('../warm-up-questions/starter-solutions.txt', 'r') as s:
 			solutions = s.readlines()
+
+		# Picks a random question
 		index = random.randint(0, min(len(questions), len(solutions) - 1))
 		question = self.format_raw_question(questions[index])
 		solution = self.format_raw_solution(solutions[index])
 		
+		# Determines whether events are independent or dependent
 		if "independent" in question:
 			return question, solution, "independent"
 		else:
@@ -636,51 +714,39 @@ class Main:
 	# Generates a random word question and formula for the answer
 	def get_word_question(self):
 		
+		# Reads all possible question and formula templates
 		with open('../word-questions/questions.txt', 'r') as q:
 			questions = q.readlines()
-		
 		with open('../word-questions/solutions.txt', 'r') as s:
 			solutions = s.readlines()
 		
+		# Pciks a random question
 		index = random.randint(0, min(len(questions), len(solutions) - 1))
 		question = self.format_raw_question(questions[index])
 		solution = self.format_raw_solution(solutions[index])
 		
 		return question, solution
 
-	# Allows in text vars to be replaced by actual variables
+	# Allows in text variables to be replaced by actual variables
 	def format_raw_question(self, line):
 		
 		line = str(line).encode().decode('utf-8').replace('\n', '')
 		
 		return line
 	
-	# Allows in text vars to be replaced by actual variables
+	# Allows in text variables to be replaced by actual variables
 	def format_raw_solution(self, line):
 		
 		line = str(line).encode().decode('utf-8').replace('\n', '')
 		
 		return line
 
-	# UNUSED (NOT IN GUI)
-	def check_solution(self, question, solution):
-		
-		user_answer = -1 # Turn while loop into a 'do-while' loop
-		print(question)
-		print("Answer to two decimal places (where applicable).")
-		user_answer = self.round_to_dp(float(input(">>>")), 2)
-		
-		while user_answer != solution:
-		
-			user_answer = float(input("Incorrect!\n>>>"))
-		
-		print("Correct!")
-
 	# Python rounds to evan by default - my own rounding function
 	def round_to_dp(self, val, digits=2):
 		
 		precision = 10 ** digits
 		
+		# Truncates remainder
 		return (round(precision * val) / precision)
 
 Main()
