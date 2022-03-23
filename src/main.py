@@ -56,8 +56,8 @@ class Main:
 		T.pack(pady = 10)
 
 	 	# Create buttons
-		button_names = ["Generate Starter Question", "Generate Word Question", "Create Your Own Question"]
-		button_functions = [self.open_starter_window, self.open_word_window, self.open_create_window]
+		button_names = ["Generate Warm Up Question", "Generate Word Question", "Create Your Own Question"]
+		button_functions = [self.open_warm_up_window, self.open_word_window, self.open_create_window]
 		buttons = []
 		
 		for i in range (0, len(button_names)):
@@ -86,70 +86,70 @@ class Main:
 		window.geometry(f"{self.window_width}x{self.window_height}+{self.x_coord}+{self.y_coord}")
 
 # Functions for allowing the user to answer a Warm Up Question.
-	def open_starter_window(self):
+	def open_warm_up_window(self):
 
 		# Get question and answer templates
-		self.starter_question, self.starter_solution = self.starter_question_controller()
+		self.question_warm_up, self.solution_warm_up = self.question_controller_warm_up()
 
 		# Config
-		self.starter_window = Toplevel(self.root)
-		self.starter_window.title("Starter Question")
-		self.starter_window.bind("<Escape>", self.toggle_fullscreen_starter)
-		self.fullscreen_starter = False
-		self.resize_to_normal(self.starter_window)
-		self.starter_window.configure(background = self.background_colour)
+		self.window_warm_up = Toplevel(self.root)
+		self.window_warm_up.title("Warm Up Question")
+		self.window_warm_up.bind("<Escape>", self.toggle_fullscreen_warm_up)
+		self.fullscreen_warm_up = False
+		self.resize_to_normal(self.window_warm_up)
+		self.window_warm_up.configure(background = self.background_colour)
 
 		# Create label
-		title = Label(self.starter_window, text = "Starter Question")
-		title.configure(font = self.title_font)
-		title.configure(foreground = self.title_colour)
-		title.configure(background = self.background_colour)
-		title.pack(pady = 20)
+		title_warm_up = Label(self.window_warm_up, text = "Warm Up Question")
+		title_warm_up.configure(font = self.title_font)
+		title_warm_up.configure(foreground = self.title_colour)
+		title_warm_up.configure(background = self.background_colour)
+		title_warm_up.pack(pady = 20)
 
 		# Display Question
-		question_box = Text(self.starter_window, height = 3, width = 500, font = self.text_font, wrap=WORD)
-		question_box.tag_configure("tag_name", justify='center')
-		question_box.insert("1.0", self.starter_question)
-		question_box.configure(foreground = self.text_colour)
-		question_box.configure(background = self.background_colour)
-		question_box.configure(highlightthickness = 0, borderwidth=0)
-		question_box.tag_add("tag_name", "1.0", "end")
-		question_box.pack(pady = 10)
+		question_box_warm_up = Text(self.window_warm_up, height = 3, width = 500, font = self.text_font, wrap=WORD)
+		question_box_warm_up.tag_configure("tag_name", justify='center')
+		question_box_warm_up.insert("1.0", self.question_warm_up)
+		question_box_warm_up.configure(foreground = self.text_colour)
+		question_box_warm_up.configure(background = self.background_colour)
+		question_box_warm_up.configure(highlightthickness = 0, borderwidth=0)
+		question_box_warm_up.tag_add("tag_name", "1.0", "end")
+		question_box_warm_up.pack(pady = 10)
 
 		# User input
-		self.input_box_starter = Entry(self.starter_window, font = self.text_font, background = 'grey')
-		self.input_box_starter.pack()
-		self.input_box_starter.focus_set()
+		self.input_box_warm_up = Entry(self.window_warm_up, font = self.text_font, background = 'grey')
+		self.input_box_warm_up.pack()
+		self.input_box_warm_up.focus_set()
 
 		# Create buttons
-		button_names = ["Submit", "New Question"]
-		button_functions = [self.check_answer_starter, self.retry_starter]
-		buttons = []
+		button_names_warm_up = ["Submit", "New Question"]
+		button_functions_warm_up = [self.check_answer_warm_up, self.retry_warm_up]
+		buttons_warm_up = []
 
-		for i in range(0, len(button_names)):
+		for i in range(0, len(button_names_warm_up)):
 			
-			buttons.append(Button(self.starter_window, text=button_names[i], command=button_functions[i]))
-			buttons[i].configure(highlightbackground = self.background_colour, foreground = self.text_colour)
-			buttons[i].pack(pady=5)
+			buttons_warm_up.append(Button(self.window_warm_up, text=button_names_warm_up[i], command=button_functions_warm_up[i]))
+			buttons_warm_up[i].configure(highlightbackground = self.background_colour, foreground = self.text_colour)
+			buttons_warm_up[i].pack(pady=5)
 
 	# Allows user to reselect question type
-	def retry_starter(self):
+	def retry_warm_up(self):
 
-		self.starter_window.destroy()
+		self.window_warm_up.destroy()
 
 	# Checks and displays whether user's answer is correct
-	def check_answer_starter(self):
+	def check_answer_warm_up(self):
 
 		# Gets user's answer from input box
-		answer = float(self.input_box_starter.get())
+		answer = float(self.input_box_warm_up.get())
 
 		# Create text widget, specify size, center it and populate it
-		T = Text(self.starter_window, height = 3, width = 500, font = self.text_font, wrap=WORD)
+		T = Text(self.window_warm_up, height = 3, width = 500, font = self.text_font, wrap=WORD)
 		T.tag_configure("tag_name", justify='center')
 		
 		# Displays "Correct" if user's answer is within 0.005 of the correct answer,
 		# otherwise "Incorrect"
-		if (self.round_to_dp(answer, 2) == self.starter_solution):
+		if (self.round_to_dp(answer, 2) == self.solution_warm_up):
 			T.insert("1.0", "Correct")
 		else:
 			T.insert("1.0", "Incorrect")
@@ -162,15 +162,15 @@ class Main:
 
 	# Need seperate helper functions for each window
 	# Allows the Esc key to change window size
-	def toggle_fullscreen_starter(self, event=None):
+	def toggle_fullscreen_warm_up(self, event=None):
 
-		self.fullscreen_starter = not self.fullscreen_starter
-		self.starter_window.attributes("-fullscreen", self.fullscreen_starter)
+		self.fullscreen_warm_up = not self.fullscreen_warm_up
+		self.window_warm_up.attributes("-fullscreen", self.fullscreen_warm_up)
 		
 		# If window has been un-fullscreened,
 		# window is centered and resized
-		if not self.fullscreen_starter:
-			self.resize_to_normal(self.starter_window)
+		if not self.fullscreen_warm_up:
+			self.resize_to_normal(self.window_warm_up)
 
 # Functions for allowing the user to answer a Word Question
 	def open_word_window(self):
@@ -276,8 +276,8 @@ class Main:
 		title.pack(pady = 20)
 
 		# Create buttons
-		button_names = ["Create Starter Question", "Create Word Question", "Main Menu"]
-		button_functions = [self.open_create_starter_window, self.open_create_word_window, self.create_question_to_main_menu]
+		button_names = ["Create Warm Up Question", "Create Word Question", "Main Menu"]
+		button_functions = [self.open_create_window_warm_up, self.open_create_window_word, self.create_question_to_main_menu]
 		buttons = []
 		
 		for i in range (0, len(button_names)):
@@ -303,21 +303,21 @@ class Main:
 			self.resize_to_normal(self.create_window)
 
 # Functions for allowing the user to create a Warm Up Question
-	def open_create_starter_window(self):
+	def open_create_window_warm_up(self):
 
 		# Get question and answer templates
-		self.create_starter_question, self.create_starter_solution = self.create_starter_controller()
+		self.create_question_warm_up, self.create_solution_warm_up = self.create_controller_warm_up()
 		
 		# Config
-		self.create_starter_window = Toplevel(self.create_window)
-		self.create_starter_window.title("Create Warm Up Question")
-		self.create_starter_window.bind("<Escape>", self.toggle_fullscreen_create_starter)
-		self.fullscreen_create_starter = False
-		self.resize_to_normal(self.create_starter_window)
-		self.create_starter_window.configure(background = self.background_colour)
+		self.create_window_warm_up = Toplevel(self.create_window)
+		self.create_window_warm_up.title("Create Warm Up Question")
+		self.create_window_warm_up.bind("<Escape>", self.toggle_fullscreen_create_warm_up)
+		self.fullscreen_create_warm_up = False
+		self.resize_to_normal(self.create_window_warm_up)
+		self.create_window_warm_up.configure(background = self.background_colour)
 
 		# Create label
-		title = Label(self.create_starter_window, text = "Create Starter Question")
+		title = Label(self.create_window_warm_up, text = "Create Warm Up Question")
 		title.configure(font = self.title_font)
 		title.configure(foreground = self.title_colour)
 		title.configure(background = self.background_colour)
@@ -334,8 +334,8 @@ class Main:
 		# Get user's values for the required variable
 		for triple in self.potential_inputs:
 
-			if triple[0] in self.create_starter_question:
-				T = Text(self.create_starter_window, height = 3, width = 500, font = self.text_font, wrap=WORD)
+			if triple[0] in self.create_question_warm_up:
+				T = Text(self.create_window_warm_up, height = 3, width = 500, font = self.text_font, wrap=WORD)
 				T.tag_configure("tag_name", justify='center')
 				T.insert("1.0", f"Please enter a value for {triple[1]}")
 				T.configure(foreground = self.text_colour)
@@ -345,36 +345,36 @@ class Main:
 				T.pack(pady = 10)
 
 				self.list_of_required_inputs.append(T)
-				self.list_of_entries.append( (triple[0], triple[2], Entry(self.create_starter_window, font = self.text_font, background = 'grey')) )
+				self.list_of_entries.append( (triple[0], triple[2], Entry(self.create_window_warm_up, font = self.text_font, background = 'grey')) )
 				self.list_of_entries[-1][-1].pack() # Pack cannot be within the append statement otherwise none is returned
 
 		# Create buttons
 		button_names = ["Submit", "Main Menu"]
-		button_functions = [self.get_input_create_starter, self.create_starter_question_to_main_menu]
-		self.create_starter_buttons = []
+		button_functions = [self.get_input_create_warm_up, self.create_warm_up_question_to_main_menu]
+		self.create_warm_up_buttons = []
 
 		for i in range(0, len(button_names)):
 
-			self.create_starter_buttons.append(Button(self.create_starter_window, text=button_names[i], command=button_functions[i]))
-			self.create_starter_buttons[i].configure(highlightbackground = self.background_colour, foreground = self.text_colour)
-			self.create_starter_buttons[i].pack(pady = 5)
+			self.create_warm_up_buttons.append(Button(self.create_window_warm_up, text=button_names[i], command=button_functions[i]))
+			self.create_warm_up_buttons[i].configure(highlightbackground = self.background_colour, foreground = self.text_colour)
+			self.create_warm_up_buttons[i].pack(pady = 5)
 
 	# Method that gets the users values and,
 	# inserts them into question and answer formula
-	def get_input_create_starter(self):
+	def get_input_create_warm_up(self):
 
 		# x = question place holder
 		# y = solution place holder
 		# z = user's input for that placeholder
 		for (x, y, z) in self.list_of_entries:
 
-			self.create_starter_question = self.create_starter_question.replace(x, z.get())
-			self.create_starter_solution = self.create_starter_solution.replace(y, z.get())
+			self.create_question_warm_up = self.create_question_warm_up.replace(x, z.get())
+			self.create_solution_warm_up = self.create_solution_warm_up.replace(y, z.get())
 
-		self.display_question_create_starter()
+		self.display_question_create_warm_up()
 
 	# Method that clears the window and displays the question for the user
-	def display_question_create_starter(self):
+	def display_question_create_warm_up(self):
 
 		# Clear screen
 		for entry in self.list_of_entries:
@@ -385,14 +385,14 @@ class Main:
 
 			prompt.destroy()
 
-		for button in self.create_starter_buttons:
+		for button in self.create_warm_up_buttons:
 
 			button.destroy()
 
 		# Display question
-		question_box = Text(self.create_starter_window, height = 3, width = 500, font = self.text_font, wrap=WORD)
+		question_box = Text(self.create_window_warm_up, height = 3, width = 500, font = self.text_font, wrap=WORD)
 		question_box.tag_configure("tag_name", justify='center')
-		question_box.insert("1.0", self.create_starter_question)
+		question_box.insert("1.0", self.create_question_warm_up)
 		question_box.configure(foreground = self.text_colour)
 		question_box.configure(background = self.background_colour)
 		question_box.configure(highlightthickness = 0, borderwidth=0)
@@ -400,39 +400,39 @@ class Main:
 		question_box.pack(pady = 10)
 
 		# User input
-		self.input_box_create_starter = Entry(self.create_starter_window, font = self.text_font, background = 'grey')
-		self.input_box_create_starter.pack()
-		self.input_box_create_starter.focus_set()
+		self.input_box_create_warm_up = Entry(self.create_window_warm_up, font = self.text_font, background = 'grey')
+		self.input_box_create_warm_up.pack()
+		self.input_box_create_warm_up.focus_set()
 
 		# Create buttons
 		button_names = ["Submit", "New Question", "Main Menu"]
-		button_functions = [self.check_answer_create_starter, self.retry_create_starter, self.create_starter_question_to_main_menu]
+		button_functions = [self.check_answer_create_warm_up, self.retry_create_warm_up, self.create_warm_up_question_to_main_menu]
 		buttons = []
 
 		for i in range(0, len(button_names)):
 
-			buttons.append(Button(self.create_starter_window, text=button_names[i], command=button_functions[i]))
+			buttons.append(Button(self.create_window_warm_up, text=button_names[i], command=button_functions[i]))
 			buttons[i].configure(highlightbackground = self.background_colour, foreground = self.text_colour)
 			buttons[i].pack(pady = 5)
 
 	# Allows user to reselct question type
-	def retry_create_starter(self):
+	def retry_create_warm_up(self):
 
-		self.create_starter_window.destroy()
+		self.create_window_warm_up.destroy()
 
 	# Checks and displays whether user's answer is correct
-	def check_answer_create_starter(self):
+	def check_answer_create_warm_up(self):
 
 		# Gets user's answer from input box
-		answer = float(self.input_box_create_starter.get())
+		answer = float(self.input_box_create_warm_up.get())
 
 		# Create text widget, specify size, center it and populate it
-		T = Text(self.create_starter_window, height = 3, width = 500, font = self.text_font, wrap=WORD)
+		T = Text(self.create_window_warm_up, height = 3, width = 500, font = self.text_font, wrap=WORD)
 		T.tag_configure("tag_name", justify='center')
 
 		# Displays "Correct" if user's answer is within 0.005 of the correct answer,
 		# otherwise "Incorrect"
-		if (self.round_to_dp(answer, 2) == self.round_to_dp(eval(self.create_starter_solution), 2)):
+		if (self.round_to_dp(answer, 2) == self.round_to_dp(eval(self.create_solution_warm_up), 2)):
 			T.insert("1.0", "Correct")
 		else:
 			T.insert("1.0", "Incorrect")
@@ -444,24 +444,24 @@ class Main:
 		T.pack(pady = 10)
 
 	# Allows the Esc key to change screen size
-	def toggle_fullscreen_create_starter(self, event=None):
+	def toggle_fullscreen_create_warm_up(self, event=None):
 
-		self.fullscreen_create_starter = not self.fullscreen_create_starter
-		self.create_starter_window.attributes("-fullscreen", self.fullscreen_create_starter)
+		self.fullscreen_create_warm_up = not self.fullscreen_create_warm_up
+		self.create_window_warm_up.attributes("-fullscreen", self.fullscreen_create_warm_up)
 		
 		# If window has been un-fullscreened,
 		# window is centered and resized
-		if not self.fullscreen_create_starter:
-			self.resize_to_normal(self.create_starter_window)
+		if not self.fullscreen_create_warm_up:
+			self.resize_to_normal(self.create_window_warm_up)
 
 	# Method that 'sends' user to main menu
-	def create_starter_question_to_main_menu(self):
+	def create_warm_up_question_to_main_menu(self):
 
-		self.create_starter_window.destroy()
+		self.create_window_warm_up.destroy()
 		self.create_window.destroy()
 
 # Functions for allowing the user to create a Word Question
-	def open_create_word_window(self):
+	def open_create_window_word(self):
 
 		# Get question and answer templates
 		self.create_word_question, self.create_word_solution = self.create_word_question_controller()
@@ -622,11 +622,11 @@ class Main:
 
 # Backend
 
-	# Interface between get_starter_question and GUI buttons
-	def starter_question_controller(self):
+	# Interface between get_question_warm_up and GUI buttons
+	def question_controller_warm_up(self):
 
 		# Gets details about question (question, formula, dependent/independent events)
-		data = self.get_starter_question()
+		data = self.get_question_warm_up()
 		
 		# Determines whether events are independent or dependent
 		independent_event = (data[2] == "independent")
@@ -675,11 +675,11 @@ class Main:
 		
 		return question, solution
 
-	# Helper function to act between get_starter_question and frontend 
+	# Helper function to act between get_question_warm_up and frontend 
 	# when user creates a question
-	def create_starter_controller(self):
+	def create_controller_warm_up(self):
 
-		question, solution, create_independent = self.get_starter_question()
+		question, solution, create_independent = self.get_question_warm_up()
 
 		return question, solution
 
@@ -691,13 +691,13 @@ class Main:
 
 		return question, solution
 
-	# Generates a random starter question and formula for the answer
-	def get_starter_question(self):
+	# Generates a random Warm Up question and formula for the answer
+	def get_question_warm_up(self):
 		
 		# Reads all possible question and formula templates
-		with open('../warm-up-questions/starter-questions.txt', 'r') as q:
+		with open('../warm-up-questions/warm-up-questions.txt', 'r') as q:
 			questions = q.readlines()
-		with open('../warm-up-questions/starter-solutions.txt', 'r') as s:
+		with open('../warm-up-questions/warm-up-solutions.txt', 'r') as s:
 			solutions = s.readlines()
 
 		# Picks a random question
