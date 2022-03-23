@@ -1,13 +1,14 @@
 # CREATE WORD QUESTIONS
 
 import random
-
-from tkinter import *
 import tkinter as tk
+from tkinter import *
 
 class Main:
 
-	# GUI Functions
+# Frontend
+
+	# GUI controls for main menu
 	def __init__(self):
 		# Config
 		self.main_menu_text = ("Welcome to the question bank.\n"
@@ -66,6 +67,7 @@ class Main:
 
 		self.root.mainloop()
 
+	# Allows the Esc key to change main menu size
 	def toggle_fullscreen(self, event=None):
 		self.fullscreen = not self.fullscreen
 		self.root.attributes("-fullscreen", self.fullscreen)
@@ -74,6 +76,7 @@ class Main:
 
 	def resize_to_normal(self, window, event=None):
 		window.geometry(f"{self.window_width}x{self.window_height}+{self.x_coord}+{self.y_coord}")
+
 
 	def openStarterWindow(self):
 		self.starter_question, self.starter_solution = self.starter_question_controller()
@@ -133,12 +136,14 @@ class Main:
 		T.tag_add("tag_name", "1.0", "end")
 		T.pack(pady = 10)
 
-	# Need seperate func for each possible window
+	# Need seperate helper functions for each screen
+	# Allows the Esc key to change screen size
 	def toggle_fullscreen_starter(self, event=None):
 		self.fullscreen_starter = not self.fullscreen_starter
 		self.starterWindow.attributes("-fullscreen", self.fullscreen_starter)
 		if not self.fullscreen_starter:
 			self.resize_to_normal(self.starterWindow)
+
 
 	def openWordWindow(self):
 		self.word_question, self.word_solution = self.word_question_controller()
@@ -198,11 +203,13 @@ class Main:
 		T.tag_add("tag_name", "1.0", "end")
 		T.pack(pady = 10)
 
+	# Allows the Esc key to change screen size
 	def	toggle_fullscreen_word(self, event=None):
 		self.fullscreen_word = not self.fullscreen_word
 		self.wordWindow.attributes("-fullscreen", self.fullscreen_word)
 		if not self.fullscreen_word:
 			self.resize_to_normal(self.wordWindow)
+
 
 	def open_create_window(self):
 		self.create_window = Toplevel(self.root)
@@ -220,7 +227,7 @@ class Main:
 		title.pack(pady = 20)
 
 		# Create buttons
-		button_names = ["Create Starter Question", "Create Word Question NOT WORKING", "Main Menu"]
+		button_names = ["Create Starter Question", "Create Word Question", "Main Menu"]
 		button_functions = [self.open_create_starter_window, self.open_create_word_window, self.create_question_to_main_menu]
 		buttons = []
 		for i in range (0, len(button_names)):
@@ -232,11 +239,13 @@ class Main:
 	def create_question_to_main_menu(self):
 		self.create_window.destroy()
 
+	# Allows the Esc key to change screen size
 	def toggle_fullscreen_create(self, event=None):
 		self.fullscreen_create = not self.fullscreen_create
 		self.create_window.attributes("-fullscreen", self.fullscreen_create)
 		if not self.fullscreen_create:
 			self.resize_to_normal(self.create_window)
+
 
 	def open_create_starter_window(self):
 		self.create_starter_question, self.create_starter_solution = self.create_starter_controller()
@@ -272,7 +281,7 @@ class Main:
 				T.pack(pady = 10)
 
 				self.list_of_required_inputs.append(T)
-				self.list_of_entries.append( (triple[0], triple[2], Entry(self.create_starter_window, font = self.text_font, background = 'grey') ))
+				self.list_of_entries.append( (triple[0], triple[2], Entry(self.create_starter_window, font = self.text_font, background = 'grey')) )
 				self.list_of_entries[-1][-1].pack() # pack cannot be within the append statement otherwise none is returned
 
 		button_names = ["Submit", "Main Menu"]
@@ -320,7 +329,7 @@ class Main:
 		self.input_box_create_starter.focus_set()
 
 		button_names = ["Submit", "New Question", "Main Menu"]
-		button_functions = [self.check_answer_create_starter, self.retry_create_starter, self.create_question_to_main_menu]
+		button_functions = [self.check_answer_create_starter, self.retry_create_starter, self.create_starter_question_to_main_menu]
 		buttons = []
 
 		for i in range(0, len(button_names)):
@@ -336,7 +345,7 @@ class Main:
 		# Create text widget, specify size, center it and populate it
 		T = Text(self.create_starter_window, height = 3, width = 500, font = self.text_font, wrap=WORD)
 		T.tag_configure("tag_name", justify='center')
-		if (self.round_to_dp(answer, 2) == self.round_to_dp(eval(self.create_starter_solution)), 2):
+		if (self.round_to_dp(answer, 2) == self.round_to_dp(eval(self.create_starter_solution), 2)):
 			T.insert("1.0", "Correct")
 		else:
 			T.insert("1.0", "Incorrect")
@@ -346,8 +355,8 @@ class Main:
 		T.tag_add("tag_name", "1.0", "end")
 		T.pack(pady = 10)
 
+	# Allows the Esc key to change screen size
 	def toggle_fullscreen_create_starter(self, event=None):
-		print("fullscreen")
 		self.fullscreen_create_starter = not self.fullscreen_create_starter
 		self.create_starter_window.attributes("-fullscreen", self.fullscreen_create_starter)
 		if not self.fullscreen_create_starter:
@@ -357,12 +366,129 @@ class Main:
 		self.create_starter_window.destroy()
 		self.create_window.destroy()
 
+
+	# Functions for allowing the user to create a word question.
 	def open_create_word_window(self):
-		pass
+		self.create_word_question, self.create_word_solution = self.create_word_question_controller()
+		print(self.create_word_question)
+		self.create_word_window = Toplevel(self.create_window)
+		self.create_word_window.title("Create Warm Up Question")
+		self.create_word_window.bind("<Escape>", self.toggle_fullscreen_create_word)
 
-	# Backend
+		self.fullscreen_create_word = False
+		self.resize_to_normal(self.create_word_window)
+		self.create_word_window.configure(background = self.background_colour)
 
-	# Acts as a menu for questions (warm-up)
+		title = Label(self.create_word_window, text = "Create Word Question")
+		title.configure(font = self.title_font)
+		title.configure(foreground = self.title_colour)
+		title.configure(background = self.background_colour)
+		title.pack(pady = 20)
+
+		self.list_of_create_word_potential_inputs = ["R1", "R2"]
+		self.list_of_create_word_entry_prompts = []
+		self.list_of_create_word_Entry_widgets = []
+
+		for possibility in self.list_of_create_word_potential_inputs:
+			if possibility in self.create_word_question:
+				T = Text(self.create_word_window, height = 3, width = 500, font = self.text_font, wrap=WORD)
+				T.tag_configure("tag_name", justify='center')
+				T.insert("1.0", f"Please enter a whole number")
+				T.configure(foreground = self.text_colour)
+				T.configure(background = self.background_colour)
+				T.configure(highlightthickness = 0, borderwidth=0)
+				T.tag_add("tag_name", "1.0", "end")
+				T.pack(pady = 10)
+
+				self.list_of_create_word_entry_prompts.append(T)
+				self.list_of_create_word_Entry_widgets.append( (possibility, Entry(self.create_word_window, font = self.text_font, background = 'grey')) )
+				self.list_of_create_word_Entry_widgets[-1][-1].pack()
+
+		button_names = ["Submit", "Main Menu"]
+		button_functions = [self.get_input_create_word, self.create_word_question_to_main_menu]
+		self.create_word_buttons = []
+
+		for i in range(0, len(button_names)):
+			self.create_word_buttons.append(Button(self.create_word_window, text=button_names[i], command=button_functions[i]))
+			self.create_word_buttons[i].configure(highlightbackground = self.background_colour, foreground = self.text_colour)
+			self.create_word_buttons[i].pack(pady = 5)
+
+
+	def get_input_create_word(self):
+		
+		self.replacements = []
+		for (x, y) in self.list_of_create_word_Entry_widgets:
+			self.create_word_question = self.create_word_question.replace(x, y.get())
+			self.replacements.append(float(y.get()))
+
+		self.display_question_create_word()
+
+	def display_question_create_word(self):
+		
+		# Clear screen
+		for prompt in self.list_of_create_word_entry_prompts:
+			prompt.destroy()
+		for widget in self.list_of_create_word_Entry_widgets:
+			widget[-1].destroy()
+		for button in self.create_word_buttons:
+			button.destroy()
+
+		question_box = Text(self.create_word_window, height = 3, width = 500, font = self.text_font, wrap=WORD)
+		question_box.tag_configure("tag_name", justify='center')
+		question_box.insert("1.0", self.create_word_question)
+		question_box.configure(foreground = self.text_colour)
+		question_box.configure(background = self.background_colour)
+		question_box.configure(highlightthickness = 0, borderwidth=0)
+		question_box.tag_add("tag_name", "1.0", "end")
+		question_box.pack(pady = 10)
+
+		# Need to do input
+		self.input_box_create_word = Entry(self.create_word_window, font = self.text_font, background = 'grey')
+		self.input_box_create_word.pack()
+		self.input_box_create_word.focus_set()
+
+		button_names = ["Submit", "New Question", "Main Menu"]
+		button_functions = [self.check_answer_create_word, self.retry_create_word, self.create_word_question_to_main_menu]
+		buttons = []
+
+		for i in range(0, len(button_names)):
+			buttons.append(Button(self.create_word_window, text=button_names[i], command=button_functions[i]))
+			buttons[i].configure(highlightbackground = self.background_colour, foreground = self.text_colour)
+			buttons[i].pack(pady = 5)
+
+	def check_answer_create_word(self):
+		answer = float(self.input_box_create_word.get())
+		# Create text widget, specify size, center it and populate it
+		T = Text(self.create_word_window, height = 3, width = 500, font = self.text_font, wrap=WORD)
+		T.tag_configure("tag_name", justify='center')
+		print(answer, self.create_word_solution, eval(self.create_word_solution))
+		if (self.round_to_dp(answer, 2) == self.round_to_dp(eval(self.create_word_solution), 2)):
+			T.insert("1.0", "Correct")
+		else:
+			T.insert("1.0", "Incorrect")
+		T.configure(foreground = self.text_colour)
+		T.configure(background = self.background_colour)
+		T.configure(highlightthickness = 0, borderwidth=0)
+		T.tag_add("tag_name", "1.0", "end")
+		T.pack(pady = 10)
+
+	def retry_create_word(self):
+		self.create_word_window.destroy()
+
+	# Allows the Esc key to change screen size
+	def toggle_fullscreen_create_word(self, event=None):
+		self.fullscreen_create_word = not self.fullscreen_create_word
+		self.create_word_window.attributes("-fullscreen", self.fullscreen_create_word)
+		if not self.fullscreen_create_word:
+			self.resize_to_normal(self.create_word_window)
+
+	def create_word_question_to_main_menu(self):
+		self.create_word_window.destroy()
+		self.create_window.destroy()
+
+# Backend
+
+	# Interface between get_starter_question and GUI button
 	def starter_question_controller(self):
 
 		data = self.get_starter_question()
@@ -389,22 +515,30 @@ class Main:
 		
 		return question, solution
 
-	# Acts as a menu for questions (word)
+	# Interface between get_word_question and GUI button
 	def word_question_controller(self):
-		random_numbers = [random.randint(1, 10) for i in range(5)]
+		self.replacements = [random.randint(1, 10) for i in range(5)]
 		pair = self.get_word_question()
 
-		question = pair[0].replace("R1", str(random_numbers[0])).replace("R2", str(random_numbers[1]))
+		question = pair[0].replace("R1", str(self.replacements[0])).replace("R2", str(self.replacements[1]))
 		solution = self.round_to_dp(eval(pair[1]), 2)
 		return question, solution
 
+	# Helper function to act between get_starter_question and frontend
 	def create_starter_controller(self):
 
-		question, solution, self.create_independent = self.get_starter_question()
+		question, solution, create_independent = self.get_starter_question()
 
 		return question, solution
 
-	# Provides interface with a random question and answer from the selection of warm up questions
+	# Helper function to act between get_word_question and frontend
+	def create_word_question_controller(self):
+
+		question, solution = self.get_word_question()
+
+		return question, solution
+
+	# Generates a random starter question and formula for the answer
 	def get_starter_question(self):
 		with open('../warm-up-questions/starter-questions.txt', 'r') as q:
 			questions = q.readlines()
@@ -418,6 +552,7 @@ class Main:
 		else:
 			return question, solution, "dependent"
 
+	# Generates a random word question and formula for the answer
 	def get_word_question(self):
 		with open('../word-questions/questions.txt', 'r') as q:
 			questions = q.readlines()
@@ -428,10 +563,12 @@ class Main:
 		solution = self.format_raw_solution(solutions[index])
 		return question, solution
 
+	# Allows in text vars to be replaced by actual variables
 	def format_raw_question(self, line):
 		line = str(line).encode().decode('utf-8').replace('\n', '')
 		return line
 	
+	# Allows in text vars to be replaced by actual variables
 	def format_raw_solution(self, line):
 		line = str(line).encode().decode('utf-8').replace('\n', '')
 		return line
@@ -446,6 +583,7 @@ class Main:
 			user_answer = float(input("Incorrect!\n>>>"))
 		print("Correct!")
 
+	# Python rounds to evan by default - my own rounding function
 	def round_to_dp(self, val, digits=2):
 		precision = 10 ** digits
 		return (round(precision * val) / precision)

@@ -1,4 +1,4 @@
-(((random_numbers[0] ** 2) + (random_numbers[1] ** 2) - random_numbers[0] - random_numbers[1]) / ((random_numbers[0] ** 2) + (random_numbers[1] ** 2) + (2 * random_numbers[0] * random_numbers[1]) - random_numbers[0] - random_numbers[1]))
-((2 * random_numbers[0] * random_numbers[1]) / ((random_numbers[0] ** 2) + (random_numbers[1] ** 2) + (2 * random_numbers[0] * random_numbers[1]) - random_numbers[0] - random_numbers[1]))
-(0.5 ** random_numbers[0])
-(0.5 ** random_numbers[0]) * random_numbers[0]
+(((self.replacements[0] ** 2) + (self.replacements[1] ** 2) - self.replacements[0] - self.replacements[1]) / ((self.replacements[0] ** 2) + (self.replacements[1] ** 2) + (2 * self.replacements[0] * self.replacements[1]) - self.replacements[0] - self.replacements[1]))
+((2 * self.replacements[0] * self.replacements[1]) / ((self.replacements[0] ** 2) + (self.replacements[1] ** 2) + (2 * self.replacements[0] * self.replacements[1]) - self.replacements[0] - self.replacements[1]))
+(0.5 ** self.replacements[0])
+(0.5 ** self.replacements[0]) * self.replacements[0]
