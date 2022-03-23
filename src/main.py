@@ -54,7 +54,7 @@ class Main:
 		T.pack(pady = 10)
 
 	 	# Create buttons
-		button_names = ["Generate Starter Question", "Generate Word Question", "Create Your Own Question"]
+		button_names = ["Generate Starter Question", "Generate Word Question", "Create Your Own Question NOT WORKING"]
 		button_functions = [self.openStarterWindow, self.openWordWindow, self.root.destroy]
 		buttons = []
 		for i in range (0, 3):
