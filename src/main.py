@@ -1,3 +1,7 @@
+# SUBMIT 
+# RETRY
+# USER CREATE BUTTOM
+
 import random
 
 from tkinter import *
@@ -76,7 +80,7 @@ class Main:
 		if not self.notfullscreen_starter:
 			self.resize_to_normal(self.starterWindow)
 
-	def	toggle_fullscreen_word(self):
+	def	toggle_fullscreen_word(self, event=None):
 		self.notfullscreen_word = not self.notfullscreen_word
 		self.wordWindow.attributes("-fullscreen", self.notfullscreen_word)
 		if not self.notfullscreen_word:
@@ -86,7 +90,7 @@ class Main:
 		window.geometry(f"{self.window_width}x{self.window_height}+{self.x_coord}+{self.y_coord}")
 
 	def openStarterWindow(self):
-			question, solution = self.starter_question()
+			self.starter_question, self.starter_solution = self.starter_question_controller()
 
 			self.starterWindow = Toplevel(self.root)
 			self.starterWindow.title("Starter Question")
@@ -105,7 +109,7 @@ class Main:
 			# Display Question
 			question_box = Text(self.starterWindow, height = 3, width = 500, font = self.text_font, wrap=WORD)
 			question_box.tag_configure("tag_name", justify='center')
-			question_box.insert("1.0", question)
+			question_box.insert("1.0", self.starter_question)
 			question_box.configure(foreground = self.text_colour)
 			question_box.configure(background = self.background_colour)
 			question_box.configure(highlightthickness = 0, borderwidth=0)
@@ -113,6 +117,38 @@ class Main:
 			question_box.pack(pady = 10)
 
 			# Need to do input
+			self.input_box_starter = Entry(self.starterWindow, font = self.text_font, background = 'grey')
+			self.input_box_starter.pack()
+			self.input_box_starter.focus_set()
+
+			submit_button_starter = Button(self.starterWindow, text="Submit", command=self.check_answer_starter)
+			submit_button_starter.configure(highlightbackground = self.background_colour, foreground = self.text_colour)
+			submit_button_starter.pack(pady = 5)
+
+			retry_button_starter = Button(self.starterWindow, text="New Question", command=self.retry_starter)
+			retry_button_starter.configure(highlightbackground = self.background_colour, foreground = self.text_colour)
+			retry_button_starter.pack(pady = 5)
+
+	def retry_starter(self):
+		self.starterWindow.destroy()
+
+	def retry_word(self):
+		self.wordWindow.destroy()
+
+	def check_answer_starter(self):
+		answer = float(self.input_box_starter.get())
+		# Create text widget, specify size, center it and populate it
+		T = Text(self.starterWindow, height = 3, width = 500, font = self.text_font, wrap=WORD)
+		T.tag_configure("tag_name", justify='center')
+		if (self.round_to_dp(answer, 2) == self.starter_solution):
+			T.insert("1.0", "Correct")
+		else:
+			T.insert("1.0", "Incorrect")
+		T.configure(foreground = self.text_colour)
+		T.configure(background = self.background_colour)
+		T.configure(highlightthickness = 0, borderwidth=0)
+		T.tag_add("tag_name", "1.0", "end")
+		T.pack(pady = 10)
 
 	def openWordWindow(self):
 		question, solution = self.word_question()
@@ -144,7 +180,7 @@ class Main:
 		# Need to do input
 
 	# Acts as a menu for questions (warm-up)
-	def starter_question(self):
+	def starter_question_controller(self):
 
 		data = self.get_starter_question()
 		independent_event = (data[2] == "independent")
@@ -211,6 +247,7 @@ class Main:
 		line = str(line).encode().decode('utf-8').replace('\n', '')
 		return line
 
+	# UNUSED
 	def check_solution(self, question, solution):
 		user_answer = -1 # Turn while loop into a 'do-while' loop
 		print(question)
