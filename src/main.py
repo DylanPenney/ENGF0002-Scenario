@@ -73,19 +73,6 @@ class Main:
 		if not self.notfullscreen:
 			self.resize_to_normal(self.root)
 
-	# Need seperate func for each possible window
-	def toggle_fullscreen_starter(self, event=None):
-		self.notfullscreen_starter = not self.notfullscreen_starter
-		self.starterWindow.attributes("-fullscreen", self.notfullscreen_starter)
-		if not self.notfullscreen_starter:
-			self.resize_to_normal(self.starterWindow)
-
-	def	toggle_fullscreen_word(self, event=None):
-		self.notfullscreen_word = not self.notfullscreen_word
-		self.wordWindow.attributes("-fullscreen", self.notfullscreen_word)
-		if not self.notfullscreen_word:
-			self.resize_to_normal(self.wordWindow)
-
 	def resize_to_normal(self, window, event=None):
 		window.geometry(f"{self.window_width}x{self.window_height}+{self.x_coord}+{self.y_coord}")
 
@@ -132,9 +119,6 @@ class Main:
 	def retry_starter(self):
 		self.starterWindow.destroy()
 
-	def retry_word(self):
-		self.wordWindow.destroy()
-
 	def check_answer_starter(self):
 		answer = float(self.input_box_starter.get())
 		# Create text widget, specify size, center it and populate it
@@ -149,6 +133,13 @@ class Main:
 		T.configure(highlightthickness = 0, borderwidth=0)
 		T.tag_add("tag_name", "1.0", "end")
 		T.pack(pady = 10)
+
+	# Need seperate func for each possible window
+	def toggle_fullscreen_starter(self, event=None):
+		self.notfullscreen_starter = not self.notfullscreen_starter
+		self.starterWindow.attributes("-fullscreen", self.notfullscreen_starter)
+		if not self.notfullscreen_starter:
+			self.resize_to_normal(self.starterWindow)
 
 	def openWordWindow(self):
 		self.word_question, self.word_solution = self.word_question_controller()
@@ -190,6 +181,9 @@ class Main:
 		retry_button_word.configure(highlightbackground = self.background_colour, foreground = self.text_colour)
 		retry_button_word.pack(pady = 5)
 
+	def retry_word(self):
+		self.wordWindow.destroy()
+
 	def check_answer_word(self):
 		answer = float(self.input_box_word.get())
 		# Create text widget, specify size, center it and populate it
@@ -204,6 +198,12 @@ class Main:
 		T.configure(highlightthickness = 0, borderwidth=0)
 		T.tag_add("tag_name", "1.0", "end")
 		T.pack(pady = 10)
+
+	def	toggle_fullscreen_word(self, event=None):
+		self.notfullscreen_word = not self.notfullscreen_word
+		self.wordWindow.attributes("-fullscreen", self.notfullscreen_word)
+		if not self.notfullscreen_word:
+			self.resize_to_normal(self.wordWindow)
 
 	# Acts as a menu for questions (warm-up)
 	def starter_question_controller(self):
@@ -273,7 +273,7 @@ class Main:
 		line = str(line).encode().decode('utf-8').replace('\n', '')
 		return line
 
-	# UNUSED
+	# UNUSED (NOT IN GUI)
 	def check_solution(self, question, solution):
 		user_answer = -1 # Turn while loop into a 'do-while' loop
 		print(question)
