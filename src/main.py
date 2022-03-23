@@ -132,11 +132,6 @@ class Main:
 			buttons_warm_up[i].configure(highlightbackground = self.background_colour, foreground = self.text_colour)
 			buttons_warm_up[i].pack(pady=5)
 
-	# Allows user to reselect question type
-	def retry_warm_up(self):
-
-		self.window_warm_up.destroy()
-
 	# Checks and displays whether user's answer is correct
 	def check_answer_warm_up(self):
 
@@ -159,6 +154,11 @@ class Main:
 		T_warm_up.configure(highlightthickness = 0, borderwidth=0)
 		T_warm_up.tag_add("tag_name", "1.0", "end")
 		T_warm_up.pack(pady = 10)
+
+	# Allows user to reselect question type
+	def retry_warm_up(self):
+
+		self.window_warm_up.destroy()
 
 	# Need seperate helper functions for each window
 	# Allows the Esc key to change window size
@@ -218,11 +218,6 @@ class Main:
 			buttons_word[i].configure(highlightbackground = self.background_colour, foreground = self.text_colour)
 			buttons_word[i].pack(pady = 5)
 
-	# Allows user to reselect question type
-	def retry_word(self):
-
-		self.window_word.destroy()
-
 	# Checks and displays whether user's answer is correct
 	def check_answer_word(self):
 
@@ -246,6 +241,11 @@ class Main:
 		T_word.tag_add("tag_name", "1.0", "end")
 		T_word.pack(pady = 10)
 
+	# Allows user to reselect question type
+	def retry_word(self):
+
+		self.window_word.destroy()
+	
 	# Allows the Esc key to change screen size
 	def	toggle_fullscreen_word(self, event=None):
 
@@ -415,11 +415,6 @@ class Main:
 			buttons_create_warm_up[i].configure(highlightbackground = self.background_colour, foreground = self.text_colour)
 			buttons_create_warm_up[i].pack(pady = 5)
 
-	# Allows user to reselct question type
-	def retry_create_warm_up(self):
-
-		self.window_create_warm_up.destroy()
-
 	# Checks and displays whether user's answer is correct
 	def check_answer_create_warm_up(self):
 
@@ -443,6 +438,11 @@ class Main:
 		T_create_warm_up.tag_add("tag_name", "1.0", "end")
 		T_create_warm_up.pack(pady = 10)
 
+	# Allows user to reselct question type
+	def retry_create_warm_up(self):
+
+		self.window_create_warm_up.destroy()
+	
 	# Allows the Esc key to change screen size
 	def toggle_fullscreen_create_warm_up(self, event=None):
 
