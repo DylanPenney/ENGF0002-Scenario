@@ -9,6 +9,11 @@ class Main:
 # GUI controls for main menu
 	def __init__(self):
 
+		self.T_warm_up = None
+		self.T_word = None
+		self.T_create_warm_up = None
+		self.T_create_word = None
+
 		# Variables for quickly changing the look of the program
 		self.main_menu_text = ("Welcome to the question bank.\n"
 			"This question bank consists of probability questions on two levels, "
@@ -90,7 +95,6 @@ class Main:
 
 		# Get question and answer templates
 		self.question_warm_up, self.solution_warm_up = self.question_controller_warm_up()
-
 		# Config
 		self.window_warm_up = Toplevel(self.root)
 		self.window_warm_up.title("Warm Up Question")
@@ -138,22 +142,25 @@ class Main:
 		# Gets user's answer from input box
 		answer_warm_up = float(self.input_box_warm_up.get())
 
+		if self.T_warm_up is not None:
+			self.T_warm_up.destroy()
+
 		# Create text widget, specify size, center it and populate it
-		T_warm_up = Text(self.window_warm_up, height = 3, width = 500, font = self.text_font, wrap=WORD)
-		T_warm_up.tag_configure("tag_name", justify='center')
+		self.T_warm_up = Text(self.window_warm_up, height = 3, width = 500, font = self.text_font, wrap=WORD)
+		self.T_warm_up.tag_configure("tag_name", justify='center')
 		
 		# Displays "Correct" if user's answer is within 0.005 of the correct answer,
 		# otherwise "Incorrect"
 		if (self.round_to_dp(answer_warm_up, 2) == self.solution_warm_up):
-			T_warm_up.insert("1.0", "Correct")
+			self.T_warm_up.insert("1.0", "Correct")
 		else:
-			T_warm_up.insert("1.0", "Incorrect")
+			self.T_warm_up.insert("1.0", "Incorrect")
 		
-		T_warm_up.configure(foreground = self.text_colour)
-		T_warm_up.configure(background = self.background_colour)
-		T_warm_up.configure(highlightthickness = 0, borderwidth=0)
-		T_warm_up.tag_add("tag_name", "1.0", "end")
-		T_warm_up.pack(pady = 10)
+		self.T_warm_up.configure(foreground = self.text_colour)
+		self.T_warm_up.configure(background = self.background_colour)
+		self.T_warm_up.configure(highlightthickness = 0, borderwidth=0)
+		self.T_warm_up.tag_add("tag_name", "1.0", "end")
+		self.T_warm_up.pack(pady = 10)
 
 	# Allows user to reselect question type
 	def retry_warm_up(self):
@@ -177,7 +184,6 @@ class Main:
 
 		# Get question and answer templates
 		self.question_word, self.solution_word = self.question_controller_word()
-
 		# Config
 		self.window_word = Toplevel(self.root)
 		self.window_word.title("Word Question")
@@ -224,22 +230,25 @@ class Main:
 		# Gets user's answer from input box
 		answer_word = float(self.input_box_word.get())
 
+		if self.T_word is not None:
+			self.T_word.destroy()
+
 		# Create text widget, specify size, center it and populate it
-		T_word = Text(self.window_word, height = 3, width = 500, font = self.text_font, wrap=WORD)
-		T_word.tag_configure("tag_name", justify='center')
+		self.T_word = Text(self.window_word, height = 3, width = 500, font = self.text_font, wrap=WORD)
+		self.T_word.tag_configure("tag_name", justify='center')
 		
 		# Displays "Correct" if user's answer is within 0.005 of the correct answer,
 		# otherwise "Incorrect"
 		if (self.round_to_dp(answer_word, 2) == self.solution_word):
-			T_word.insert("1.0", "Correct")
+			self.T_word.insert("1.0", "Correct")
 		else:
-			T_word.insert("1.0", "Incorrect")
+			self.T_word.insert("1.0", "Incorrect")
 		
-		T_word.configure(foreground = self.text_colour)
-		T_word.configure(background = self.background_colour)
-		T_word.configure(highlightthickness = 0, borderwidth=0)
-		T_word.tag_add("tag_name", "1.0", "end")
-		T_word.pack(pady = 10)
+		self.T_word.configure(foreground = self.text_colour)
+		self.T_word.configure(background = self.background_colour)
+		self.T_word.configure(highlightthickness = 0, borderwidth=0)
+		self.T_word.tag_add("tag_name", "1.0", "end")
+		self.T_word.pack(pady = 10)
 
 	# Allows user to reselect question type
 	def retry_word(self):
@@ -370,7 +379,6 @@ class Main:
 
 			self.question_create_warm_up = self.question_create_warm_up.replace(x, z.get())
 			self.solution_create_warm_up = self.solution_create_warm_up.replace(y, z.get())
-
 		self.display_question_create_warm_up()
 
 	# Method that clears the window and displays the question for the user
@@ -421,22 +429,25 @@ class Main:
 		# Gets user's answer from input box
 		answer_create_warm_up = float(self.input_box_create_warm_up.get())
 
+		if self.T_create_warm_up is not None:
+			self.T_create_warm_up.destroy()
+
 		# Create text widget, specify size, center it and populate it
-		T_create_warm_up = Text(self.window_create_warm_up, height = 3, width = 500, font = self.text_font, wrap=WORD)
-		T_create_warm_up.tag_configure("tag_name", justify='center')
+		self.T_create_warm_up = Text(self.window_create_warm_up, height = 3, width = 500, font = self.text_font, wrap=WORD)
+		self.T_create_warm_up.tag_configure("tag_name", justify='center')
 
 		# Displays "Correct" if user's answer is within 0.005 of the correct answer,
 		# otherwise "Incorrect"
 		if (self.round_to_dp(answer_create_warm_up, 2) == self.round_to_dp(eval(self.solution_create_warm_up), 2)):
-			T_create_warm_up.insert("1.0", "Correct")
+			self.T_create_warm_up.insert("1.0", "Correct")
 		else:
-			T_create_warm_up.insert("1.0", "Incorrect")
+			self.T_create_warm_up.insert("1.0", "Incorrect")
 
-		T_create_warm_up.configure(foreground = self.text_colour)
-		T_create_warm_up.configure(background = self.background_colour)
-		T_create_warm_up.configure(highlightthickness = 0, borderwidth=0)
-		T_create_warm_up.tag_add("tag_name", "1.0", "end")
-		T_create_warm_up.pack(pady = 10)
+		self.T_create_warm_up.configure(foreground = self.text_colour)
+		self.T_create_warm_up.configure(background = self.background_colour)
+		self.T_create_warm_up.configure(highlightthickness = 0, borderwidth=0)
+		self.T_create_warm_up.tag_add("tag_name", "1.0", "end")
+		self.T_create_warm_up.pack(pady = 10)
 
 	# Allows user to reselct question type
 	def retry_create_warm_up(self):
@@ -580,22 +591,25 @@ class Main:
 		# Gets user's answer from input box
 		answer_create_word = float(self.input_box_create_word.get())
 
+		if self.T_create_word is not None:
+			self.T_create_word.destroy()
+
 		# Create text widget, specify size, center it and populate it
-		T_create_word = Text(self.window_create_word, height = 3, width = 500, font = self.text_font, wrap=WORD)
-		T_create_word.tag_configure("tag_name", justify='center')
+		self.T_create_word = Text(self.window_create_word, height = 3, width = 500, font = self.text_font, wrap=WORD)
+		self.T_create_word.tag_configure("tag_name", justify='center')
 		
 		# Displays "Correct" if user's answer is within 0.005 of the correct answer,
 		# otherwise "Incorrect"
 		if (self.round_to_dp(answer_create_word, 2) == self.round_to_dp(eval(self.solution_create_word), 2)):
-			T_create_word.insert("1.0", "Correct")
+			self.T_create_word.insert("1.0", "Correct")
 		else:
-			T_create_word.insert("1.0", "Incorrect")
+			self.T_create_word.insert("1.0", "Incorrect")
 		
-		T_create_word.configure(foreground = self.text_colour)
-		T_create_word.configure(background = self.background_colour)
-		T_create_word.configure(highlightthickness = 0, borderwidth=0)
-		T_create_word.tag_add("tag_name", "1.0", "end")
-		T_create_word.pack(pady = 10)
+		self.T_create_word.configure(foreground = self.text_colour)
+		self.T_create_word.configure(background = self.background_colour)
+		self.T_create_word.configure(highlightthickness = 0, borderwidth=0)
+		self.T_create_word.tag_add("tag_name", "1.0", "end")
+		self.T_create_word.pack(pady = 10)
 
 	# Allows user to reselect question type
 	def retry_create_word(self):
